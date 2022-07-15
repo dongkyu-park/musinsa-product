@@ -1,10 +1,10 @@
 package com.musinsa.product.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 public enum ErrorCode {
 
