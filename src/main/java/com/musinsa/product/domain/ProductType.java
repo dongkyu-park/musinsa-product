@@ -1,7 +1,11 @@
 package com.musinsa.product.domain;
 
+import com.musinsa.product.exception.CustomException;
+import com.musinsa.product.exception.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Getter
@@ -17,5 +21,12 @@ public enum ProductType {
     ACCESSORIES("액세서리"),
     ;
 
-    private final String name;
+    private final String title;
+
+    public static ProductType fromName(String requestName) {
+        return Arrays.stream(values())
+                .filter(productType -> productType.name().equals(requestName.toUpperCase()))
+                .findFirst()
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_CATEGORY_NAME));
+    }
 }

@@ -28,7 +28,7 @@ public class Product extends BaseEntity {
     private boolean isDeleted = false;
 
     public Product(ProductRequest productRequest) {
-        this.type = productRequest.getProductType();
+        this.type = ProductType.fromName(productRequest.getProductType());
         this.brand = productRequest.getBrand();
         this.price = productRequest.getPrice();
     }
