@@ -1,6 +1,6 @@
 package com.musinsa.product.domain;
 
-import com.musinsa.product.dto.ProductRequest;
+import com.musinsa.product.dto.ProductPostRequest;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,9 +27,9 @@ public class Product extends BaseEntity {
 
     private boolean isDeleted = false;
 
-    public Product(ProductRequest productRequest) {
-        this.category = Category.fromString(productRequest.getCategory());
-        this.brand = productRequest.getBrand();
-        this.price = productRequest.getPrice();
+    public Product(ProductPostRequest productPostRequest) {
+        this.category = Category.fromString(productPostRequest.getCategory());
+        this.brand = productPostRequest.getBrand();
+        this.price = productPostRequest.getPrice();
     }
 }

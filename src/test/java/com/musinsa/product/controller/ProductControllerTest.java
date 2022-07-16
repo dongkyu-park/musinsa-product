@@ -1,7 +1,7 @@
 package com.musinsa.product.controller;
 
 import com.musinsa.product.domain.Product;
-import com.musinsa.product.dto.ProductRequest;
+import com.musinsa.product.dto.ProductPostRequest;
 import com.musinsa.product.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -87,15 +87,15 @@ class ProductControllerTest {
         String category = "PANTS";
         String brand = "A";
         Integer price = 20000;
-        ProductRequest stubProductRequest = getStubProductRequest(category, brand, price);
-        Product stubProduct = getStubProduct(stubProductRequest);
+        ProductPostRequest stubProductPostRequest = getStubProductPostRequest(category, brand, price);
+        Product stubProduct = getStubProduct(stubProductPostRequest);
         String body = "{\n" +
                 "\"category\": \"" + category + "\",\n" +
                 "\"brand\": \"" + brand + "\",\n" +
                 "\"price\": " + price + "\n" +
                 "}";
 
-        Mockito.when(productService.addProduct(any(ProductRequest.class)))
+        Mockito.when(productService.addProduct(any(ProductPostRequest.class)))
                 .thenReturn(stubProduct);
 
         //when
@@ -112,11 +112,11 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.data.price", is(price)));
     }
 
-    private ProductRequest getStubProductRequest(String category, String brand, Integer price) {
-        return new ProductRequest(category, brand, price);
+    private ProductPostRequest getStubProductPostRequest(String category, String brand, Integer price) {
+        return new ProductPostRequest(category, brand, price);
     }
 
-    private Product getStubProduct(ProductRequest stubProductRequest) {
-        return new Product(stubProductRequest);
+    private Product getStubProduct(ProductPostRequest stubProductPostRequest) {
+        return new Product(stubProductPostRequest);
     }
 }

@@ -1,7 +1,7 @@
 package com.musinsa.product.controller;
 
 import com.musinsa.product.domain.Product;
-import com.musinsa.product.dto.ProductRequest;
+import com.musinsa.product.dto.ProductPostRequest;
 import com.musinsa.product.dto.ProductResponse;
 import com.musinsa.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class ProductController {
 
     @PostMapping("/product")
     @ResponseStatus(HttpStatus.OK)
-    public ProductResponse<Product> addProduct(@RequestBody @Validated ProductRequest productRequest) {
-        return new ProductResponse<>("상품이 정상적으로 추가 되었습니다.", productService.addProduct(productRequest));
+    public ProductResponse<Product> addProduct(@RequestBody @Validated ProductPostRequest productPostRequest) {
+        return new ProductResponse<>("상품이 정상적으로 추가 되었습니다.", productService.addProduct(productPostRequest));
     }
 }

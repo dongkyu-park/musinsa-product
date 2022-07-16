@@ -2,7 +2,7 @@ package com.musinsa.product.repository;
 
 import com.musinsa.product.config.JpaConfig;
 import com.musinsa.product.domain.Product;
-import com.musinsa.product.dto.ProductRequest;
+import com.musinsa.product.dto.ProductPostRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,22 +25,22 @@ class ProductRepositoryTest {
         String category = "PANTS";
         String brand = "A";
         Integer price = 20000;
-        ProductRequest stubProductRequest = getStubProductRequest(category, brand, price);
+        ProductPostRequest stubProductPostRequest = getStubProductPostRequest(category, brand, price);
 
         //when
-        Product savedProduct = productRepository.save(getStubProduct(stubProductRequest));
+        Product savedProduct = productRepository.save(getStubProduct(stubProductPostRequest));
 
         //then
-        assertThat(savedProduct.getCategory().name()).isEqualTo(stubProductRequest.getCategory());
-        assertThat(savedProduct.getBrand()).isEqualTo(stubProductRequest.getBrand());
-        assertThat(savedProduct.getPrice()).isEqualTo(stubProductRequest.getPrice());
+        assertThat(savedProduct.getCategory().name()).isEqualTo(stubProductPostRequest.getCategory());
+        assertThat(savedProduct.getBrand()).isEqualTo(stubProductPostRequest.getBrand());
+        assertThat(savedProduct.getPrice()).isEqualTo(stubProductPostRequest.getPrice());
     }
 
-    private ProductRequest getStubProductRequest(String category, String brand, Integer price) {
-        return new ProductRequest(category, brand, price);
+    private ProductPostRequest getStubProductPostRequest(String category, String brand, Integer price) {
+        return new ProductPostRequest(category, brand, price);
     }
 
-    private Product getStubProduct(ProductRequest stubProductRequest) {
-        return new Product(stubProductRequest);
+    private Product getStubProduct(ProductPostRequest stubProductPostRequest) {
+        return new Product(stubProductPostRequest);
     }
 }

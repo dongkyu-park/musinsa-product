@@ -1,7 +1,7 @@
 package com.musinsa.product.service;
 
 import com.musinsa.product.domain.Product;
-import com.musinsa.product.dto.ProductRequest;
+import com.musinsa.product.dto.ProductPostRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +22,10 @@ class ProductServiceTest {
         String category = "PANTS";
         String brand = "A";
         Integer price = 20000;
-        ProductRequest stubProductRequest = getStubProductRequest(category, brand, price);
+        ProductPostRequest stubProductPostRequest = getStubProductPostRequest(category, brand, price);
 
         //when
-        Product savedProduct = productService.addProduct(stubProductRequest);
+        Product savedProduct = productService.addProduct(stubProductPostRequest);
 
         //then
         assertThat(savedProduct.getCategory().name()).isEqualTo(category);
@@ -33,7 +33,7 @@ class ProductServiceTest {
         assertThat(savedProduct.getPrice()).isEqualTo(price);
     }
 
-    private ProductRequest getStubProductRequest(String category, String brand, Integer price) {
-        return new ProductRequest(category, brand, price);
+    private ProductPostRequest getStubProductPostRequest(String category, String brand, Integer price) {
+        return new ProductPostRequest(category, brand, price);
     }
 }
