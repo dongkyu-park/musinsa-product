@@ -1,6 +1,8 @@
 package com.musinsa.product.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -8,6 +10,8 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductRequest {
 
     @NotBlank(message = "카테고리명이 입력되지 않았거나, 공백이 입력 되었습니다.")
