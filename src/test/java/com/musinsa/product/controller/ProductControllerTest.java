@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -163,7 +164,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("최저가 조회. 잘못 된 파라미터값으로 요청이 올 경우, 요청이 실패하고 400 에러 코드 리턴")
-    void categoryLowestPriceProductByAllCategories_fail() throws Exception {
+    void searchLowestPriceProductByAllCategories_fail() throws Exception {
         //given
 
         //when
@@ -232,16 +233,8 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("최저가 조회. 요청 성공")
-    void categoryLowestPriceProductByAllCategories_ok() throws Exception {
+    void searchLowestPriceProductByAllCategories_ok() throws Exception {
         //given
-        List<String> brands = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H");
-        List<String> categories = Arrays.asList("top", "outer", "pants", "sneakers", "bag", "cap", "socks", "accessories");
-        LowestPriceProductRequest stubLowestPriceProductRequest = getStubLowestPriceProductRequest(brands, categories);
-        String body = "{\n" +
-                "\"brand\": \"" + brands + "\",\n" +
-                "\"category\": \"" + categories + "\"\n" +
-                "}";
-
         Mockito.when(productService.searchLowestPriceProductByAllCategories(any(LowestPriceProductRequest.class)))
                 .thenReturn(getStubLowestPriceProductDto());
 
@@ -250,6 +243,57 @@ class ProductControllerTest {
                 .get("/product/lowest-price")
                 .param("category", "top, outer, pants, sneakers, bag, cap, socks, accessories")
                 .param("brand", "A, B, C, D, E, F, G, H")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalPrice", is(81000)));
+    }
+
+    @Test
+    @DisplayName("한 브랜드 최저가 조회. 잘못 된 파라미터값으로 요청이 올 경우, 요청이 실패하고 400 에러 코드 리턴")
+    void searchLowestTotalPriceProductByOneBrand_fail() throws Exception {
+        //given
+
+        //when
+        //브랜드명 누락
+        ResultActions result1 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-total-price")
+                .param("brand", "")
+                .contentType(MediaType.APPLICATION_JSON));
+        //브랜드명 공백
+        ResultActions result2 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-total-price")
+                .param("brand", " ")
+                .contentType(MediaType.APPLICATION_JSON));
+        //브랜드명 50글자 초과
+        ResultActions result3 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-total-price")
+                .param("brand", "abcdefghijabcdefghijabcdefghijabcdefghijabcdefghij1")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        //브랜드명 누락
+        result1.andExpect(status().isBadRequest());
+        //브랜드명 공백
+        result2.andExpect(status().isBadRequest());
+        //브랜드명 50글자 초과
+        result3.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("한 브랜드 최저가 조회. 요청 성공")
+    void searchLowestTotalPriceProductByOneBrand_ok() throws Exception {
+        //given
+        String brand = "A";
+
+        Mockito.when(productService.searchLowestTotalPriceProductByOneBrand(anyString()))
+                .thenReturn(getStubLowestPriceProductDtoSearchByOneBrand());
+
+        //when
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-total-price")
+                .param("brand", brand)
                 .contentType(MediaType.APPLICATION_JSON));
 
         //then
@@ -268,6 +312,25 @@ class ProductControllerTest {
                 new ProductInfo(6L, Category.CAP, "F", 10000),
                 new ProductInfo(7L, Category.SOCKS, "G", 12000),
                 new ProductInfo(8L, Category.ACCESSORIES, "H", 9000)
+        );
+
+        productInfos.stream()
+                .forEach(productInfo -> lowestPriceProductDto.addLowestPriceProductInCategory(productInfo));
+
+        return lowestPriceProductDto;
+    }
+
+    private LowestPriceProductDto getStubLowestPriceProductDtoSearchByOneBrand() {
+        LowestPriceProductDto lowestPriceProductDto = new LowestPriceProductDto();
+        List<ProductInfo> productInfos = Arrays.asList(
+                new ProductInfo(1L, Category.TOP, "A", 10000),
+                new ProductInfo(2L, Category.OUTER, "A", 20000),
+                new ProductInfo(3L, Category.PANTS, "A", 5000),
+                new ProductInfo(4L, Category.SNEAKERS, "A", 7000),
+                new ProductInfo(5L, Category.BAG, "A", 8000),
+                new ProductInfo(6L, Category.CAP, "A", 10000),
+                new ProductInfo(7L, Category.SOCKS, "A", 12000),
+                new ProductInfo(8L, Category.ACCESSORIES, "A", 9000)
         );
 
         productInfos.stream()

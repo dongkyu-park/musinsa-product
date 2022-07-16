@@ -53,6 +53,19 @@ class ProductServiceTest {
         assertThat(lowestPriceProductDto.getLowestPriceProductEachCategories().size()).isNotEqualTo(0);
     }
 
+    @Test
+    @DisplayName("한 브랜드 최저가 조회. 성공하면 조회 정보가 반환된다.")
+    void searchLowestTotalPriceProductByOneBrand_ok() {
+        //given
+        String brand = "A";
+
+        //when
+        LowestPriceProductDto lowestPriceProductDto = productService.searchLowestTotalPriceProductByOneBrand(brand);
+
+        //then
+        assertThat(lowestPriceProductDto.getLowestPriceProductEachCategories().size()).isNotEqualTo(0);
+    }
+
     private ProductPostRequest getStubProductPostRequest(String category, String brand, Integer price) {
         return new ProductPostRequest(category, brand, price);
     }
