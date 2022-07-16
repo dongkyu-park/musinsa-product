@@ -2,8 +2,8 @@ package com.musinsa.product.controller;
 
 import com.musinsa.product.domain.Category;
 import com.musinsa.product.domain.Product;
-import com.musinsa.product.dto.SearchLowestPriceProductRequest;
-import com.musinsa.product.dto.SearchLowestPriceProductResponse;
+import com.musinsa.product.dto.lowestPriceProductRequest;
+import com.musinsa.product.dto.lowestPriceProductResponse;
 import com.musinsa.product.dto.ProductPostRequest;
 import com.musinsa.product.dto.ProductResponse;
 import com.musinsa.product.service.ProductService;
@@ -28,20 +28,20 @@ public class ProductController {
 
     @GetMapping("/product/lowest-price")
     @ResponseStatus(HttpStatus.OK)
-    public SearchLowestPriceProductResponse searchLowestPriceProductByAllCategories(@ModelAttribute @Validated SearchLowestPriceProductRequest searchLowestPriceProductRequest) {
-        customValidator.validateSearchLowestPriceProductRequest(searchLowestPriceProductRequest);
+    public lowestPriceProductResponse categoryLowestPriceProductByAllCategories(@ModelAttribute @Validated lowestPriceProductRequest lowestPriceProductRequest) {
+        customValidator.validateLowestPriceProductRequest(lowestPriceProductRequest);
 
-        SearchLowestPriceProductResponse searchLowestPriceProductResponse = new SearchLowestPriceProductResponse();
-        int requestParamCount = searchLowestPriceProductRequest.getBrand().size();
+        lowestPriceProductResponse lowestPriceProductResponse = new lowestPriceProductResponse();
+        int requestParamCount = lowestPriceProductRequest.getBrand().size();
 
         for (int i = 0; i < requestParamCount; i++) {
-            String brand = searchLowestPriceProductRequest.getBrand().get(i);
-            Category category = Category.fromString(searchLowestPriceProductRequest.getCategory().get(i));
+            String brand = lowestPriceProductRequest.getBrand().get(i);
+            Category category = Category.fromString(lowestPriceProductRequest.getCategory().get(i));
 
-            searchLowestPriceProductResponse
+            lowestPriceProductResponse
                     .addLowestPriceProductInCategory(productService.searchLowestPriceProductByAllCategories(brand, category));
         }
 
-        return searchLowestPriceProductResponse;
+        return lowestPriceProductResponse;
     }
 }

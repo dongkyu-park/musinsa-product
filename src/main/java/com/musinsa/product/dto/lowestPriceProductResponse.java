@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class SearchLowestPriceProductResponse {
+public class lowestPriceProductResponse {
 
     private final List<ProductDto> lowestPriceProductEachCategories = new ArrayList<>();
     private int totalPrice;
