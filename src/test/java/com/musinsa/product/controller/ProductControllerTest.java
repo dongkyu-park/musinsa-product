@@ -34,59 +34,100 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("잘못 된 파라미터값으로 요청이 올 경우, 요청이 실패하고 400 에러 코드 리턴")
-    void fail() throws Exception {
+    void addProduct_fail() throws Exception {
         //given
         String zeroString = "";
         String blank = " ";
 
+        String zeroStringBody = "{\n" +
+                "\"category\": \"" + zeroString + "\",\n" +
+                "\"brand\": \"" + zeroString + "\",\n" +
+                "\"price\": " + zeroString + "\n" +
+                "}";
+        String blankStringBody = "{\n" +
+                "\"category\": \"" + blank + "\",\n" +
+                "\"brand\": \"" + blank + "\",\n" +
+                "\"price\": " + blank + "\n" +
+                "}";
+        String overStringBody = "{\n" +
+                "\"category\": \"" + "PANTS" + "\",\n" +
+                "\"brand\": \"" + "abcdefghijabcdefghijabcdefghijabcdefghijabcdefghij1" + "\",\n" +
+                "\"price\": " + "10000" + "\n" +
+                "}";
+        String negativePriceBody = "{\n" +
+                "\"category\": \"" + "PANTS" + "\",\n" +
+                "\"brand\": \"" + "A" + "\",\n" +
+                "\"price\": " + "-10000" + "\n" +
+                "}";
+
         //when
-        //then
         //카테고리명 누락
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/product").param("category", zeroString)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+        ResultActions result1 = mockMvc.perform(MockMvcRequestBuilders
+                .post("/product")
+                .content(zeroStringBody)
+                .contentType(MediaType.APPLICATION_JSON));
         //카테고리명 공백
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/product").param("category", blank)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+        ResultActions result2 = mockMvc.perform(MockMvcRequestBuilders
+                .post("/product")
+                .content(blankStringBody)
+                .contentType(MediaType.APPLICATION_JSON));
 
         //브랜드명 누락
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/product").param("brand", zeroString)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+        ResultActions result3 = mockMvc.perform(MockMvcRequestBuilders
+                .post("/product")
+                .content(zeroStringBody)
+                .contentType(MediaType.APPLICATION_JSON));
         //브랜드명 공백
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/product").param("brand", blank)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+        ResultActions result4 = mockMvc.perform(MockMvcRequestBuilders
+                .post("/product")
+                .content(blankStringBody)
+                .contentType(MediaType.APPLICATION_JSON));
         //브랜드명 50글자 초과
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/product").param("brand", "abcdefghijabcdefghijabcdefghijabcdefghijabcdefghij1")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+        ResultActions result5 = mockMvc.perform(MockMvcRequestBuilders
+                .post("/product")
+                .content(overStringBody)
+                .contentType(MediaType.APPLICATION_JSON));
 
         //가격 누락
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/product").param("price", zeroString)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+        ResultActions result6 = mockMvc.perform(MockMvcRequestBuilders
+                .post("/product")
+                .content(zeroStringBody)
+                .contentType(MediaType.APPLICATION_JSON));
         //가격 공백
-        mockMvc.perform(MockMvcRequestBuilders.post("/product").param("price", blank)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+        ResultActions result7 = mockMvc.perform(MockMvcRequestBuilders
+                .post("/product")
+                .content(blankStringBody)
+                .contentType(MediaType.APPLICATION_JSON));
         //가격 음수
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/product").param("price", "-10000")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+        ResultActions result8 = mockMvc.perform(MockMvcRequestBuilders
+                .post("/product")
+                .content(negativePriceBody)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        //카테고리명 누락
+        result1.andExpect(status().isBadRequest());
+        //카테고리명 공백
+        result2.andExpect(status().isBadRequest());
+
+        //브랜드명 누락
+        result3.andExpect(status().isBadRequest());
+        //브랜드명 공백
+        result4.andExpect(status().isBadRequest());
+        //브랜드명 50글자 초과
+        result5.andExpect(status().isBadRequest());
+
+        //가격 누락
+        result6.andExpect(status().isBadRequest());
+        //가격 공백
+        result7.andExpect(status().isBadRequest());
+        //가격 음수
+        result8.andExpect(status().isBadRequest());
     }
 
     @Test
     @DisplayName("요청 성공")
-    void ok() throws Exception {
+    void addProduct_ok() throws Exception {
         //given
         String category = "PANTS";
         String brand = "A";
