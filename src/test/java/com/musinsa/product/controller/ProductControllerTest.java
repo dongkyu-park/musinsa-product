@@ -1,6 +1,10 @@
 package com.musinsa.product.controller;
 
+import com.musinsa.product.domain.Category;
 import com.musinsa.product.domain.Product;
+import com.musinsa.product.dto.LowestPriceProductDto;
+import com.musinsa.product.dto.LowestPriceProductRequest;
+import com.musinsa.product.dto.ProductInfo;
 import com.musinsa.product.dto.ProductPostRequest;
 import com.musinsa.product.service.ProductService;
 import com.musinsa.product.valid.CustomValidator;
@@ -15,12 +19,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ProductController.class)
+@WebMvcTest({ProductController.class, CustomValidator.class})
 class ProductControllerTest {
 
     @Autowired
@@ -29,11 +36,8 @@ class ProductControllerTest {
     @MockBean
     private ProductService productService;
 
-    @MockBean
-    private CustomValidator customValidator;
-
     @Test
-    @DisplayName("잘못 된 파라미터값으로 요청이 올 경우, 요청이 실패하고 400 에러 코드 리턴")
+    @DisplayName("상품 추가. 잘못 된 파라미터값으로 요청이 올 경우, 요청이 실패하고 400 에러 코드 리턴")
     void addProduct_fail() throws Exception {
         //given
         String zeroString = "";
@@ -126,7 +130,7 @@ class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("요청 성공")
+    @DisplayName("상품 추가. 요청 성공")
     void addProduct_ok() throws Exception {
         //given
         String category = "PANTS";
@@ -155,6 +159,128 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.data.category", is(category)))
                 .andExpect(jsonPath("$.data.brand", is(brand)))
                 .andExpect(jsonPath("$.data.price", is(price)));
+    }
+
+    @Test
+    @DisplayName("최저가 조회. 잘못 된 파라미터값으로 요청이 올 경우, 요청이 실패하고 400 에러 코드 리턴")
+    void categoryLowestPriceProductByAllCategories_fail() throws Exception {
+        //given
+
+        //when
+        //카테고리명 누락
+        ResultActions result1 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-price")
+                .param("category", "top, outer, pants, sneakers, bag,, socks, accessories")
+                .param("brand", "A, B, C, D, E, F, G, H")
+                .contentType(MediaType.APPLICATION_JSON));
+        //카테고리명 공백
+        ResultActions result2 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-price")
+                .param("category", "top, outer, pants, sneakers, bag, cap, , accessories")
+                .param("brand", "A, B, C, D, E, F, G, H")
+                .contentType(MediaType.APPLICATION_JSON));
+        //유효하지 않은 카테고리명
+        ResultActions result3 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-price")
+                .param("category", "top, shoes, pants, sneaker, bag, cap, , accessories")
+                .param("brand", "A, B, C, D, E, F, G, H")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //브랜드명 누락
+        ResultActions result4 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-price")
+                .param("category", "top, outer, pants, sneakers, bag, cap, socks, accessories")
+                .param("brand", "A, B, C, D, E, F,, H")
+                .contentType(MediaType.APPLICATION_JSON));
+        //브랜드명 공백
+        ResultActions result5 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-price")
+                .param("category", "top, outer, pants, sneakers, bag, cap, socks, accessories")
+                .param("brand", "A, B, C, D, E, F, , H")
+                .contentType(MediaType.APPLICATION_JSON));
+        //브랜드명 50글자 초과
+        ResultActions result6 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-price")
+                .param("category", "top, outer, pants, sneakers, bag, cap, socks, accessories")
+                .param("brand", "A, B, C, D, E, F, abcdefghijabcdefghijabcdefghijabcdefghijabcdefghij1, H")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //카테고리명 == 브랜드명 갯수 불일치
+        ResultActions result7 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-price")
+                .param("category", "top, outer, pants, sneakers, bag, cap, socks, accessories")
+                .param("brand", "A, B, C, D, E, F")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        //카테고리명 누락
+        result1.andExpect(status().isBadRequest());
+        //카테고리명 공백
+        result2.andExpect(status().isBadRequest());
+        //유효하지 않은 카테고리명
+        result3.andExpect(status().isBadRequest());
+
+        //브랜드명 누락
+        result4.andExpect(status().isBadRequest());
+        //브랜드명 공백
+        result5.andExpect(status().isBadRequest());
+        //브랜드명 50글자 초과
+        result6.andExpect(status().isBadRequest());
+        //카테고리명 == 브랜드명 갯수 불일치
+        result7.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("최저가 조회. 요청 성공")
+    void categoryLowestPriceProductByAllCategories_ok() throws Exception {
+        //given
+        List<String> brands = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H");
+        List<String> categories = Arrays.asList("top", "outer", "pants", "sneakers", "bag", "cap", "socks", "accessories");
+        LowestPriceProductRequest stubLowestPriceProductRequest = getStubLowestPriceProductRequest(brands, categories);
+        String body = "{\n" +
+                "\"brand\": \"" + brands + "\",\n" +
+                "\"category\": \"" + categories + "\"\n" +
+                "}";
+
+        Mockito.when(productService.searchLowestPriceProductByAllCategories(any(LowestPriceProductRequest.class)))
+                .thenReturn(getStubLowestPriceProductDto());
+
+        //when
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-price")
+                .param("category", "top, outer, pants, sneakers, bag, cap, socks, accessories")
+                .param("brand", "A, B, C, D, E, F, G, H")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalPrice", is(81000)));
+    }
+
+    private LowestPriceProductDto getStubLowestPriceProductDto() {
+        LowestPriceProductDto lowestPriceProductDto = new LowestPriceProductDto();
+        List<ProductInfo> productInfos = Arrays.asList(
+                new ProductInfo(1L, Category.TOP, "A", 10000),
+                new ProductInfo(2L, Category.OUTER, "B", 20000),
+                new ProductInfo(3L, Category.PANTS, "C", 5000),
+                new ProductInfo(4L, Category.SNEAKERS, "D", 7000),
+                new ProductInfo(5L, Category.BAG, "E", 8000),
+                new ProductInfo(6L, Category.CAP, "F", 10000),
+                new ProductInfo(7L, Category.SOCKS, "G", 12000),
+                new ProductInfo(8L, Category.ACCESSORIES, "H", 9000)
+        );
+
+        productInfos.stream()
+                .forEach(productInfo -> lowestPriceProductDto.addLowestPriceProductInCategory(productInfo));
+
+        return lowestPriceProductDto;
+    }
+
+    private LowestPriceProductRequest getStubLowestPriceProductRequest(List<String> brands, List<String> categories) {
+        return LowestPriceProductRequest.builder()
+                .brand(brands)
+                .category(categories)
+                .build();
     }
 
     private ProductPostRequest getStubProductPostRequest(String category, String brand, Integer price) {

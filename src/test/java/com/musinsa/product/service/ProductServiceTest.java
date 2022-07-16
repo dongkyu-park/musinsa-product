@@ -1,11 +1,16 @@
 package com.musinsa.product.service;
 
 import com.musinsa.product.domain.Product;
+import com.musinsa.product.dto.LowestPriceProductDto;
+import com.musinsa.product.dto.LowestPriceProductRequest;
 import com.musinsa.product.dto.ProductPostRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,8 +21,8 @@ class ProductServiceTest {
     private ProductService productService;
 
     @Test
-    @DisplayName("저장이 성공하면 저장된 엔티티가 반환된다.")
-    void ok() {
+    @DisplayName("상품 추가. 저장이 성공하면 저장된 엔티티가 반환된다.")
+    void addProduct_ok() {
         //given
         String category = "PANTS";
         String brand = "A";
@@ -33,7 +38,29 @@ class ProductServiceTest {
         assertThat(savedProduct.getPrice()).isEqualTo(price);
     }
 
+    @Test
+    @DisplayName("최저가 조회. 성공하면 조회 정보가 반환된다.")
+    void searchLowestPriceProductByAllCategories_ok() {
+        //given
+        List<String> brands = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H");
+        List<String> categories = Arrays.asList("top", "outer", "pants", "sneakers", "bag", "cap", "socks", "accessories");
+        LowestPriceProductRequest stubLowestPriceProductRequest = getStubLowestPriceProductRequest(brands, categories);
+
+        //when
+        LowestPriceProductDto lowestPriceProductDto = productService.searchLowestPriceProductByAllCategories(stubLowestPriceProductRequest);
+
+        //then
+        assertThat(lowestPriceProductDto.getLowestPriceProductEachCategories().size()).isNotEqualTo(0);
+    }
+
     private ProductPostRequest getStubProductPostRequest(String category, String brand, Integer price) {
         return new ProductPostRequest(category, brand, price);
+    }
+
+    private LowestPriceProductRequest getStubLowestPriceProductRequest(List<String> brands, List<String> categories) {
+        return LowestPriceProductRequest.builder()
+                .brand(brands)
+                .category(categories)
+                .build();
     }
 }
