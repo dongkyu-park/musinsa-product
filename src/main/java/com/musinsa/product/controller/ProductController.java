@@ -24,7 +24,7 @@ public class ProductController {
 
     @GetMapping("/product/lowest-price")
     @ResponseStatus(HttpStatus.OK)
-    public LowestPriceProductResponse categoryLowestPriceProductByAllCategories(@ModelAttribute @Validated LowestPriceProductRequest lowestPriceProductRequest) {
+    public LowestPriceProductResponse searchLowestPriceProductByAllCategories(@ModelAttribute @Validated LowestPriceProductRequest lowestPriceProductRequest) {
         customValidator.validateLowestPriceProductRequest(lowestPriceProductRequest);
         LowestPriceProductDto lowestPriceProductDto = productService.searchLowestPriceProductByAllCategories(lowestPriceProductRequest);
 
