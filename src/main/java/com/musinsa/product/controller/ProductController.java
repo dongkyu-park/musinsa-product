@@ -7,6 +7,7 @@ import com.musinsa.product.dto.SearchLowestPriceProductResponse;
 import com.musinsa.product.dto.ProductPostRequest;
 import com.musinsa.product.dto.ProductResponse;
 import com.musinsa.product.service.ProductService;
+import com.musinsa.product.valid.CustomValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final CustomValidator customValidator;
 
     @PostMapping("/product")
     @ResponseStatus(HttpStatus.OK)
@@ -27,6 +29,8 @@ public class ProductController {
     @GetMapping("/product/lowest-price")
     @ResponseStatus(HttpStatus.OK)
     public SearchLowestPriceProductResponse searchLowestPriceProductByAllCategories(@ModelAttribute @Validated SearchLowestPriceProductRequest searchLowestPriceProductRequest) {
+        customValidator.validateSearchLowestPriceProductRequest(searchLowestPriceProductRequest);
+
         SearchLowestPriceProductResponse searchLowestPriceProductResponse = new SearchLowestPriceProductResponse();
         int requestParamCount = searchLowestPriceProductRequest.getBrand().size();
 
