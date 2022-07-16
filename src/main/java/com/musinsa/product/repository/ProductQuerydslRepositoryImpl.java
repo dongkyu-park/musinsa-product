@@ -1,7 +1,7 @@
 package com.musinsa.product.repository;
 
 import com.musinsa.product.domain.*;
-import com.musinsa.product.dto.ProductDto;
+import com.musinsa.product.dto.ProductInfo;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -17,16 +17,16 @@ public class ProductQuerydslRepositoryImpl implements ProductQuerydslRepository 
     private final QProduct product = QProduct.product;
 
     @Override
-    public ProductDto findLowestPriceByBrandAndCategory(String brand, Category category) {
+    public ProductInfo findLowestPriceByBrandAndCategory(String brand, Category category) {
         if (BRAND_PRODUCT_STATISTIC.isNotCached(brand, category)) {
             updateCache(brand, category);
         }
 
-        return BRAND_PRODUCT_STATISTIC.getLowestPriceByBrandAndCategory(brand, category);
+        return BRAND_PRODUCT_STATISTIC.getLowestPriceProduct(brand, category);
     }
 
     private void updateCache(String brand, Category category) {
-        ProductDto productDto = jpaQueryFactory.select(Projections.fields(ProductDto.class,
+        ProductInfo productInfo = jpaQueryFactory.select(Projections.fields(ProductInfo.class,
                 this.product.price.min().as("price"),
                 this.product.id,
                 this.product.price,
@@ -36,29 +36,29 @@ public class ProductQuerydslRepositoryImpl implements ProductQuerydslRepository 
                 .where(this.product.brand.eq(brand), this.product.category.eq(category))
                 .fetchOne();
 
-        addCache(productDto);
+        addCache(productInfo);
     }
 
-    private void addCache(ProductDto productDto) {
-        if (cacheHasBrand(productDto)) {
-            addCacheNewCategory(productDto);
+    private void addCache(ProductInfo productInfo) {
+        if (cacheHasBrand(productInfo)) {
+            addCacheNewCategory(productInfo);
             return;
         }
-        addCacheNewBrand(productDto);
-        addCacheNewCategory(productDto);
+        addCacheNewBrand(productInfo);
+        addCacheNewCategory(productInfo);
     }
 
-    private boolean cacheHasBrand(ProductDto productDto) {
-        return BRAND_PRODUCT_STATISTIC.getPriceStatisticByCategoryInBrand().containsKey(productDto.getBrand());
+    private boolean cacheHasBrand(ProductInfo productInfo) {
+        return BRAND_PRODUCT_STATISTIC.getPriceStatisticByCategoryInBrand().containsKey(productInfo.getBrand());
     }
 
-    private void addCacheNewCategory(ProductDto productDto) {
-        BRAND_PRODUCT_STATISTIC.getPriceStatisticByCategoryInBrand().get(productDto.getBrand())
+    private void addCacheNewCategory(ProductInfo productInfo) {
+        BRAND_PRODUCT_STATISTIC.getPriceStatisticByCategoryInBrand().get(productInfo.getBrand())
                 .getLowestProductInfoInCategory()
-                .put(productDto.getCategory(), productDto);
+                .put(productInfo.getCategory(), productInfo);
     }
 
-    private void addCacheNewBrand(ProductDto productDto) {
-        BRAND_PRODUCT_STATISTIC.getPriceStatisticByCategoryInBrand().put(productDto.getBrand(), new CategoryProductStatistic());
+    private void addCacheNewBrand(ProductInfo productInfo) {
+        BRAND_PRODUCT_STATISTIC.getPriceStatisticByCategoryInBrand().put(productInfo.getBrand(), new CategoryProductStatistic());
     }
 }

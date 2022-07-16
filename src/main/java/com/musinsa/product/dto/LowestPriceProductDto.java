@@ -8,11 +8,11 @@ import java.util.List;
 @Getter
 public class LowestPriceProductDto {
 
-    private final List<ProductDto> lowestPriceProductEachCategories = new ArrayList<>();
+    private final List<ProductInfo> lowestPriceProductEachCategories = new ArrayList<>();
     private int totalPrice;
 
-    public void addLowestPriceProductInCategory(ProductDto productDto) {
-        lowestPriceProductEachCategories.add(productDto);
-        totalPrice += productDto.getPrice();
+    public void addLowestPriceProductInCategory(ProductInfo productInfo) {
+        lowestPriceProductEachCategories.add(productInfo);
+        totalPrice += productInfo.getPrice();
     }
 }

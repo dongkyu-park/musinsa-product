@@ -1,9 +1,9 @@
 package com.musinsa.product.repository;
 
 import com.musinsa.product.domain.Category;
-import com.musinsa.product.dto.ProductDto;
+import com.musinsa.product.dto.ProductInfo;
 
 public interface ProductQuerydslRepository {
 
-    ProductDto findLowestPriceByBrandAndCategory(String brand, Category category);
+    ProductInfo findLowestPriceByBrandAndCategory(String brand, Category category);
 }

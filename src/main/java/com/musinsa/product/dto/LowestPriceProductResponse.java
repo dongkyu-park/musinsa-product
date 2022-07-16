@@ -7,7 +7,7 @@ import java.util.List;
 @Getter
 public class LowestPriceProductResponse {
 
-    private final List<ProductDto> lowestPriceProductEachCategories;
+    private final List<ProductInfo> lowestPriceProductEachCategories;
     private int totalPrice;
 
     public LowestPriceProductResponse(LowestPriceProductDto lowestPriceProductDto) {

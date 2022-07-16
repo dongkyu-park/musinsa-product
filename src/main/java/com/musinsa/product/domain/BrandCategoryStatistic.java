@@ -1,6 +1,6 @@
 package com.musinsa.product.domain;
 
-import com.musinsa.product.dto.ProductDto;
+import com.musinsa.product.dto.ProductInfo;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class BrandCategoryStatistic {
         return false;
     }
 
-    public ProductDto getLowestPriceByBrandAndCategory(String brand, Category category) {
+    public ProductInfo getLowestPriceProduct(String brand, Category category) {
         return getLowestProductInfoInCategory(brand).get(category);
     }
 
@@ -35,7 +35,7 @@ public class BrandCategoryStatistic {
         return priceStatisticByCategoryInBrand.containsKey(brand);
     }
 
-    private Map<Category, ProductDto> getLowestProductInfoInCategory(String brand) {
+    private Map<Category, ProductInfo> getLowestProductInfoInCategory(String brand) {
         return priceStatisticByCategoryInBrand.get(brand).getLowestProductInfoInCategory();
     }
 }
