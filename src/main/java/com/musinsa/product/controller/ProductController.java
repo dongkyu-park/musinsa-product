@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 public class ProductController {
 
     private final ProductService productService;
@@ -37,8 +38,8 @@ public class ProductController {
     @GetMapping("/product/lowest-total-price")
     @ResponseStatus(HttpStatus.OK)
     public LowestTotalPriceProductResponse searchLowestTotalPriceProductByOneBrand(@RequestParam
-                                                                                  @NotBlank(message = "브랜드명이 입력되지 않았거나, 공백이 입력 되었습니다.")
-                                                                                  @Size(min = 1, max = 50, message = "브랜드명은 1자 이상, 50자 이하 여야 합니다.") String brand) {
+                                                                                    @NotBlank(message = "브랜드명이 입력되지 않았거나, 공백이 입력 되었습니다.")
+                                                                                    @Size(min = 1, max = 50, message = "브랜드명은 1자 이상, 50자 이하 여야 합니다.") String brand) {
         LowestPriceProductDto lowestPriceProductDto = productService.searchLowestTotalPriceProductByOneBrand(brand);
 
         return new LowestTotalPriceProductResponse(brand, lowestPriceProductDto);
