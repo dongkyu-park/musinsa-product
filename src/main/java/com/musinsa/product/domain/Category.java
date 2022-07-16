@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Getter
-public enum ProductType {
+public enum Category {
 
     TOP("상의"),
     OUTER("아우터"),
@@ -23,9 +23,9 @@ public enum ProductType {
 
     private final String title;
 
-    public static ProductType fromName(String requestName) {
+    public static Category fromString(String requestCategory) {
         return Arrays.stream(values())
-                .filter(productType -> productType.name().equals(requestName.toUpperCase()))
+                .filter(category -> category.name().equals(requestCategory.toUpperCase()))
                 .findFirst()
                 .orElseThrow(() -> new CustomException(ErrorCode.INVALID_CATEGORY_NAME));
     }

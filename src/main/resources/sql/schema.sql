@@ -2,7 +2,7 @@ drop table if exists product;
 
 create table product (
     id bigint auto_increment,
-    type varchar(20),
+    category varchar(20),
     brand varchar(50),
     price integer not null,
     created_at datetime not null,

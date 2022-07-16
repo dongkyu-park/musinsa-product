@@ -19,21 +19,21 @@ class ProductServiceTest {
     @DisplayName("저장이 성공하면 저장된 엔티티가 반환된다.")
     void ok() {
         //given
-        String productType = "PANTS";
+        String category = "PANTS";
         String brand = "A";
         Integer price = 20000;
-        ProductRequest stubProductRequest = getStubProductRequest(productType, brand, price);
+        ProductRequest stubProductRequest = getStubProductRequest(category, brand, price);
 
         //when
         Product savedProduct = productService.addProduct(stubProductRequest);
 
         //then
-        assertThat(savedProduct.getType().name()).isEqualTo(productType);
+        assertThat(savedProduct.getCategory().name()).isEqualTo(category);
         assertThat(savedProduct.getBrand()).isEqualTo(brand);
         assertThat(savedProduct.getPrice()).isEqualTo(price);
     }
 
-    private ProductRequest getStubProductRequest(String productType, String brand, Integer price) {
-        return new ProductRequest(productType, brand, price);
+    private ProductRequest getStubProductRequest(String category, String brand, Integer price) {
+        return new ProductRequest(category, brand, price);
     }
 }

@@ -39,12 +39,12 @@ class ProductControllerTest {
         //then
         //카테고리명 누락
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/product").param("productType", zeroString)
+                .post("/product").param("category", zeroString)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
         //카테고리명 공백
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/product").param("productType", blank)
+                .post("/product").param("category", blank)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
@@ -84,13 +84,13 @@ class ProductControllerTest {
     @DisplayName("요청 성공")
     void ok() throws Exception {
         //given
-        String productType = "PANTS";
+        String category = "PANTS";
         String brand = "A";
         Integer price = 20000;
-        ProductRequest stubProductRequest = getStubProductRequest(productType, brand, price);
+        ProductRequest stubProductRequest = getStubProductRequest(category, brand, price);
         Product stubProduct = getStubProduct(stubProductRequest);
         String body = "{\n" +
-                "\"productType\": \"" + productType + "\",\n" +
+                "\"category\": \"" + category + "\",\n" +
                 "\"brand\": \"" + brand + "\",\n" +
                 "\"price\": " + price + "\n" +
                 "}";
@@ -107,13 +107,13 @@ class ProductControllerTest {
 
         //then
         result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.type", is(productType)))
+                .andExpect(jsonPath("$.data.category", is(category)))
                 .andExpect(jsonPath("$.data.brand", is(brand)))
                 .andExpect(jsonPath("$.data.price", is(price)));
     }
 
-    private ProductRequest getStubProductRequest(String productType, String brand, Integer price) {
-        return new ProductRequest(productType, brand, price);
+    private ProductRequest getStubProductRequest(String category, String brand, Integer price) {
+        return new ProductRequest(category, brand, price);
     }
 
     private Product getStubProduct(ProductRequest stubProductRequest) {

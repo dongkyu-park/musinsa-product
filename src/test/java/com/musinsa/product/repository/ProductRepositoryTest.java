@@ -22,22 +22,22 @@ class ProductRepositoryTest {
     @DisplayName("저장이 성공하면 저장된 엔티티가 반환된다.")
     void ok() {
         //given
-        String productType = "PANTS";
+        String category = "PANTS";
         String brand = "A";
         Integer price = 20000;
-        ProductRequest stubProductRequest = getStubProductRequest(productType, brand, price);
+        ProductRequest stubProductRequest = getStubProductRequest(category, brand, price);
 
         //when
         Product savedProduct = productRepository.save(getStubProduct(stubProductRequest));
 
         //then
-        assertThat(savedProduct.getType().name()).isEqualTo(stubProductRequest.getProductType());
+        assertThat(savedProduct.getCategory().name()).isEqualTo(stubProductRequest.getCategory());
         assertThat(savedProduct.getBrand()).isEqualTo(stubProductRequest.getBrand());
         assertThat(savedProduct.getPrice()).isEqualTo(stubProductRequest.getPrice());
     }
 
-    private ProductRequest getStubProductRequest(String productType, String brand, Integer price) {
-        return new ProductRequest(productType, brand, price);
+    private ProductRequest getStubProductRequest(String category, String brand, Integer price) {
+        return new ProductRequest(category, brand, price);
     }
 
     private Product getStubProduct(ProductRequest stubProductRequest) {

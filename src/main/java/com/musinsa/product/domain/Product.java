@@ -18,7 +18,7 @@ public class Product extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private ProductType type;
+    private Category category;
 
     private String brand;
 
@@ -28,7 +28,7 @@ public class Product extends BaseEntity {
     private boolean isDeleted = false;
 
     public Product(ProductRequest productRequest) {
-        this.type = ProductType.fromName(productRequest.getProductType());
+        this.category = Category.fromString(productRequest.getCategory());
         this.brand = productRequest.getBrand();
         this.price = productRequest.getPrice();
     }

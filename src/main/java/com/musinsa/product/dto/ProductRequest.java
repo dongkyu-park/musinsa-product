@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 public class ProductRequest {
 
     @NotBlank(message = "카테고리명이 입력되지 않았거나, 공백이 입력 되었습니다.")
-    private String productType;
+    private String category;
 
     @NotBlank(message = "브랜드명이 입력되지 않았거나, 공백이 입력 되었습니다.")
     @Size(min = 1, max = 50, message = "브랜드명은 1자 이상, 50자 이하 여야 합니다.")
