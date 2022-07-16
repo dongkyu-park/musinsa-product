@@ -8,7 +8,7 @@ import java.util.List;
 public class LowestPriceProductResponse {
 
     private final List<ProductInfo> lowestPriceProductEachCategories;
-    private int totalPrice;
+    private final int totalPrice;
 
     public LowestPriceProductResponse(LowestPriceProductDto lowestPriceProductDto) {
         this.lowestPriceProductEachCategories = lowestPriceProductDto.getLowestPriceProductEachCategories();
