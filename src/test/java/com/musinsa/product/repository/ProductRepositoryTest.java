@@ -1,6 +1,7 @@
 package com.musinsa.product.repository;
 
 import com.musinsa.product.config.JpaConfig;
+import com.musinsa.product.config.QueryDslConfig;
 import com.musinsa.product.domain.Product;
 import com.musinsa.product.dto.ProductPostRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Import;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Import(JpaConfig.class)
+@Import({JpaConfig.class, QueryDslConfig.class})
 class ProductRepositoryTest {
 
     @Autowired

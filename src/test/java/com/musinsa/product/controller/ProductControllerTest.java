@@ -3,6 +3,7 @@ package com.musinsa.product.controller;
 import com.musinsa.product.domain.Product;
 import com.musinsa.product.dto.ProductPostRequest;
 import com.musinsa.product.service.ProductService;
+import com.musinsa.product.valid.CustomValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -27,6 +28,9 @@ class ProductControllerTest {
 
     @MockBean
     private ProductService productService;
+
+    @MockBean
+    private CustomValidator customValidator;
 
     @Test
     @DisplayName("잘못 된 파라미터값으로 요청이 올 경우, 요청이 실패하고 400 에러 코드 리턴")
