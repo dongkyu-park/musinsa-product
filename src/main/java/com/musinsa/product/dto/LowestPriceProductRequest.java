@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Builder
-public class lowestPriceProductRequest {
+public class LowestPriceProductRequest {
 
     private final List<@NotBlank(message = "카테고리명이 입력되지 않았거나, 공백이 입력 되었습니다.")
             String> category;

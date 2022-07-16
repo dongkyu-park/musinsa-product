@@ -1,11 +1,7 @@
 package com.musinsa.product.controller;
 
-import com.musinsa.product.domain.Category;
 import com.musinsa.product.domain.Product;
-import com.musinsa.product.dto.lowestPriceProductRequest;
-import com.musinsa.product.dto.lowestPriceProductResponse;
-import com.musinsa.product.dto.ProductPostRequest;
-import com.musinsa.product.dto.ProductResponse;
+import com.musinsa.product.dto.*;
 import com.musinsa.product.service.ProductService;
 import com.musinsa.product.valid.CustomValidator;
 import lombok.RequiredArgsConstructor;
@@ -28,20 +24,10 @@ public class ProductController {
 
     @GetMapping("/product/lowest-price")
     @ResponseStatus(HttpStatus.OK)
-    public lowestPriceProductResponse categoryLowestPriceProductByAllCategories(@ModelAttribute @Validated lowestPriceProductRequest lowestPriceProductRequest) {
+    public LowestPriceProductResponse categoryLowestPriceProductByAllCategories(@ModelAttribute @Validated LowestPriceProductRequest lowestPriceProductRequest) {
         customValidator.validateLowestPriceProductRequest(lowestPriceProductRequest);
+        LowestPriceProductDto lowestPriceProductDto = productService.searchLowestPriceProductByAllCategories(lowestPriceProductRequest);
 
-        lowestPriceProductResponse lowestPriceProductResponse = new lowestPriceProductResponse();
-        int requestParamCount = lowestPriceProductRequest.getBrand().size();
-
-        for (int i = 0; i < requestParamCount; i++) {
-            String brand = lowestPriceProductRequest.getBrand().get(i);
-            Category category = Category.fromString(lowestPriceProductRequest.getCategory().get(i));
-
-            lowestPriceProductResponse
-                    .addLowestPriceProductInCategory(productService.searchLowestPriceProductByAllCategories(brand, category));
-        }
-
-        return lowestPriceProductResponse;
+        return new LowestPriceProductResponse(lowestPriceProductDto);
     }
 }
