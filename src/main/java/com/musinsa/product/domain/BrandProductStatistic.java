@@ -9,6 +9,14 @@ public class BrandProductStatistic {
 
     private BrandCategoryTag lowestPriceCategories = new BrandCategoryTag();
 
+    public boolean isCached(String brand, Category category) {
+        if (hasBrand(brand) && hasCategory(brand, category)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public boolean isNotCached(String brand, Category category) {
         if (!hasBrand(brand)) {
             return true;

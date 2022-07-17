@@ -31,16 +31,16 @@ public class CategoryProductStatistic {
         return highestPriceProduct.getCategoryProductBooks().get(category);
     }
 
-    public void addCache(ProductInfo lowestPriceProductInfo, ProductInfo highestPriceProductInfo, Category category) {
-        addNewCategory(lowestPriceProductInfo, highestPriceProductInfo, category);
+    public void addCache(List<ProductInfo> lowestAndHighestPriceProductInfo) {
+        addNewCategory(lowestAndHighestPriceProductInfo.get(0), lowestAndHighestPriceProductInfo.get(1));
     }
 
-    private void addNewCategory(ProductInfo lowestPriceProductInfo, ProductInfo highestPriceProductInfo, Category category) {
+    private void addNewCategory(ProductInfo lowestPriceProductInfo, ProductInfo highestPriceProductInfo) {
         lowestPriceProduct.getCategoryProductBooks()
-                .put(category, lowestPriceProductInfo);
+                .put(lowestPriceProductInfo.getCategory(), lowestPriceProductInfo);
 
         highestPriceProduct.getCategoryProductBooks()
-                .put(category, highestPriceProductInfo);
+                .put(highestPriceProductInfo.getCategory(), highestPriceProductInfo);
     }
 
     public List<ProductInfo> getLowestAndHighestPriceProductInfoByCategory(Category category) {
