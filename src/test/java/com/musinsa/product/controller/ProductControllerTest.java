@@ -64,6 +64,18 @@ class ProductControllerTest {
                 "\"brand\": \"" + "A" + "\",\n" +
                 "\"price\": " + "-10000" + "\n" +
                 "}";
+        String missingCategoryBody = "{\n" +
+                "\"brand\": \"" + "A" + "\",\n" +
+                "\"price\": " + "10000" + "\n" +
+                "}";
+        String missingBrandBody = "{\n" +
+                "\"category\": \"" + "PANTS" + "\",\n" +
+                "\"price\": " + "10000" + "\n" +
+                "}";
+        String missingPriceBody = "{\n" +
+                "\"category\": \"" + "PANTS" + "\",\n" +
+                "\"brand\": \"" + "A" + "\"\n" +
+                "}";
 
         //when
         //카테고리명 누락
@@ -71,40 +83,55 @@ class ProductControllerTest {
                 .post("/product")
                 .content(zeroStringBody)
                 .contentType(MediaType.APPLICATION_JSON));
-        //카테고리명 공백
+        //카테고리명 누락2
         ResultActions result2 = mockMvc.perform(MockMvcRequestBuilders
+                .post("/product")
+                .content(missingCategoryBody)
+                .contentType(MediaType.APPLICATION_JSON));
+        //카테고리명 공백
+        ResultActions result3 = mockMvc.perform(MockMvcRequestBuilders
                 .post("/product")
                 .content(blankStringBody)
                 .contentType(MediaType.APPLICATION_JSON));
 
         //브랜드명 누락
-        ResultActions result3 = mockMvc.perform(MockMvcRequestBuilders
+        ResultActions result4 = mockMvc.perform(MockMvcRequestBuilders
                 .post("/product")
                 .content(zeroStringBody)
                 .contentType(MediaType.APPLICATION_JSON));
+        //브랜드명 누락2
+        ResultActions result5 = mockMvc.perform(MockMvcRequestBuilders
+                .post("/product")
+                .content(missingBrandBody)
+                .contentType(MediaType.APPLICATION_JSON));
         //브랜드명 공백
-        ResultActions result4 = mockMvc.perform(MockMvcRequestBuilders
+        ResultActions result6 = mockMvc.perform(MockMvcRequestBuilders
                 .post("/product")
                 .content(blankStringBody)
                 .contentType(MediaType.APPLICATION_JSON));
         //브랜드명 50글자 초과
-        ResultActions result5 = mockMvc.perform(MockMvcRequestBuilders
+        ResultActions result7 = mockMvc.perform(MockMvcRequestBuilders
                 .post("/product")
                 .content(overStringBody)
                 .contentType(MediaType.APPLICATION_JSON));
 
         //가격 누락
-        ResultActions result6 = mockMvc.perform(MockMvcRequestBuilders
+        ResultActions result8 = mockMvc.perform(MockMvcRequestBuilders
                 .post("/product")
                 .content(zeroStringBody)
                 .contentType(MediaType.APPLICATION_JSON));
+        //가격 누락2
+        ResultActions result9 = mockMvc.perform(MockMvcRequestBuilders
+                .post("/product")
+                .content(missingPriceBody)
+                .contentType(MediaType.APPLICATION_JSON));
         //가격 공백
-        ResultActions result7 = mockMvc.perform(MockMvcRequestBuilders
+        ResultActions result10 = mockMvc.perform(MockMvcRequestBuilders
                 .post("/product")
                 .content(blankStringBody)
                 .contentType(MediaType.APPLICATION_JSON));
         //가격 음수
-        ResultActions result8 = mockMvc.perform(MockMvcRequestBuilders
+        ResultActions result11 = mockMvc.perform(MockMvcRequestBuilders
                 .post("/product")
                 .content(negativePriceBody)
                 .contentType(MediaType.APPLICATION_JSON));
@@ -112,22 +139,28 @@ class ProductControllerTest {
         //then
         //카테고리명 누락
         result1.andExpect(status().isBadRequest());
-        //카테고리명 공백
+        //카테고리명 누락2
         result2.andExpect(status().isBadRequest());
+        //카테고리명 공백
+        result3.andExpect(status().isBadRequest());
 
         //브랜드명 누락
-        result3.andExpect(status().isBadRequest());
-        //브랜드명 공백
         result4.andExpect(status().isBadRequest());
-        //브랜드명 50글자 초과
+        //브랜드명 누락2
         result5.andExpect(status().isBadRequest());
+        //브랜드명 공백
+        result6.andExpect(status().isBadRequest());
+        //브랜드명 50글자 초과
+        result7.andExpect(status().isBadRequest());
 
         //가격 누락
-        result6.andExpect(status().isBadRequest());
-        //가격 공백
-        result7.andExpect(status().isBadRequest());
-        //가격 음수
         result8.andExpect(status().isBadRequest());
+        //가격 누락2
+        result9.andExpect(status().isBadRequest());
+        //가격 공백
+        result10.andExpect(status().isBadRequest());
+        //가격 음수
+        result11.andExpect(status().isBadRequest());
     }
 
     @Test
@@ -174,40 +207,50 @@ class ProductControllerTest {
                 .param("category", "top, outer, pants, sneakers, bag,, socks, accessories")
                 .param("brand", "A, B, C, D, E, F, G, H")
                 .contentType(MediaType.APPLICATION_JSON));
-        //카테고리명 공백
+        //카테고리명 누락2
         ResultActions result2 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-price")
+                .param("brand", "A, B, C, D, E, F, G, H")
+                .contentType(MediaType.APPLICATION_JSON));
+        //카테고리명 공백
+        ResultActions result3 = mockMvc.perform(MockMvcRequestBuilders
                 .get("/product/lowest-price")
                 .param("category", "top, outer, pants, sneakers, bag, cap, , accessories")
                 .param("brand", "A, B, C, D, E, F, G, H")
                 .contentType(MediaType.APPLICATION_JSON));
         //유효하지 않은 카테고리명
-        ResultActions result3 = mockMvc.perform(MockMvcRequestBuilders
+        ResultActions result4 = mockMvc.perform(MockMvcRequestBuilders
                 .get("/product/lowest-price")
                 .param("category", "top, shoes, pants, sneaker, bag, cap, , accessories")
                 .param("brand", "A, B, C, D, E, F, G, H")
                 .contentType(MediaType.APPLICATION_JSON));
 
         //브랜드명 누락
-        ResultActions result4 = mockMvc.perform(MockMvcRequestBuilders
+        ResultActions result5 = mockMvc.perform(MockMvcRequestBuilders
                 .get("/product/lowest-price")
                 .param("category", "top, outer, pants, sneakers, bag, cap, socks, accessories")
                 .param("brand", "A, B, C, D, E, F,, H")
                 .contentType(MediaType.APPLICATION_JSON));
+        //브랜드명 누락2
+        ResultActions result6 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-price")
+                .param("category", "top, outer, pants, sneakers, bag, cap, socks, accessories")
+                .contentType(MediaType.APPLICATION_JSON));
         //브랜드명 공백
-        ResultActions result5 = mockMvc.perform(MockMvcRequestBuilders
+        ResultActions result7 = mockMvc.perform(MockMvcRequestBuilders
                 .get("/product/lowest-price")
                 .param("category", "top, outer, pants, sneakers, bag, cap, socks, accessories")
                 .param("brand", "A, B, C, D, E, F, , H")
                 .contentType(MediaType.APPLICATION_JSON));
         //브랜드명 50글자 초과
-        ResultActions result6 = mockMvc.perform(MockMvcRequestBuilders
+        ResultActions result8 = mockMvc.perform(MockMvcRequestBuilders
                 .get("/product/lowest-price")
                 .param("category", "top, outer, pants, sneakers, bag, cap, socks, accessories")
                 .param("brand", "A, B, C, D, E, F, abcdefghijabcdefghijabcdefghijabcdefghijabcdefghij1, H")
                 .contentType(MediaType.APPLICATION_JSON));
 
         //카테고리명 == 브랜드명 갯수 불일치
-        ResultActions result7 = mockMvc.perform(MockMvcRequestBuilders
+        ResultActions result9 = mockMvc.perform(MockMvcRequestBuilders
                 .get("/product/lowest-price")
                 .param("category", "top, outer, pants, sneakers, bag, cap, socks, accessories")
                 .param("brand", "A, B, C, D, E, F")
@@ -216,19 +259,23 @@ class ProductControllerTest {
         //then
         //카테고리명 누락
         result1.andExpect(status().isBadRequest());
-        //카테고리명 공백
+        //카테고리명 누락2
         result2.andExpect(status().isBadRequest());
-        //유효하지 않은 카테고리명
+        //카테고리명 공백
         result3.andExpect(status().isBadRequest());
+        //유효하지 않은 카테고리명
+        result4.andExpect(status().isBadRequest());
 
         //브랜드명 누락
-        result4.andExpect(status().isBadRequest());
-        //브랜드명 공백
         result5.andExpect(status().isBadRequest());
-        //브랜드명 50글자 초과
+        //브랜드명 누락2
         result6.andExpect(status().isBadRequest());
-        //카테고리명 == 브랜드명 갯수 불일치
+        //브랜드명 공백
         result7.andExpect(status().isBadRequest());
+        //브랜드명 50글자 초과
+        result8.andExpect(status().isBadRequest());
+        //카테고리명 == 브랜드명 갯수 불일치
+        result9.andExpect(status().isBadRequest());
     }
 
     @Test
@@ -261,13 +308,17 @@ class ProductControllerTest {
                 .get("/product/lowest-total-price")
                 .param("brand", "")
                 .contentType(MediaType.APPLICATION_JSON));
-        //브랜드명 공백
+        //브랜드명 누락2
         ResultActions result2 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-total-price")
+                .contentType(MediaType.APPLICATION_JSON));
+        //브랜드명 공백
+        ResultActions result3 = mockMvc.perform(MockMvcRequestBuilders
                 .get("/product/lowest-total-price")
                 .param("brand", " ")
                 .contentType(MediaType.APPLICATION_JSON));
         //브랜드명 50글자 초과
-        ResultActions result3 = mockMvc.perform(MockMvcRequestBuilders
+        ResultActions result4 = mockMvc.perform(MockMvcRequestBuilders
                 .get("/product/lowest-total-price")
                 .param("brand", "abcdefghijabcdefghijabcdefghijabcdefghijabcdefghij1")
                 .contentType(MediaType.APPLICATION_JSON));
@@ -275,10 +326,12 @@ class ProductControllerTest {
         //then
         //브랜드명 누락
         result1.andExpect(status().isBadRequest());
-        //브랜드명 공백
+        //브랜드명 누락2
         result2.andExpect(status().isBadRequest());
-        //브랜드명 50글자 초과
+        //브랜드명 공백
         result3.andExpect(status().isBadRequest());
+        //브랜드명 50글자 초과
+        result4.andExpect(status().isBadRequest());
     }
 
     @Test
