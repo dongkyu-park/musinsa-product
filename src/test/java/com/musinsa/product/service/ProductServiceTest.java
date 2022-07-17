@@ -55,12 +55,12 @@ class ProductServiceTest {
 
     @Test
     @DisplayName("한 브랜드 최저가 조회. 성공하면 조회 정보가 반환된다.")
-    void searchLowestTotalPriceProductByOneBrand_ok() {
+    void searchLowestTotalPriceProductByBrand_ok() {
         //given
         String brand = "A";
 
         //when
-        LowestPriceProductDto lowestPriceProductDto = productService.searchLowestTotalPriceProductByOneBrand(brand);
+        LowestPriceProductDto lowestPriceProductDto = productService.searchLowestTotalPriceProductByBrand(brand);
 
         //then
         assertThat(lowestPriceProductDto.getLowestPriceProductEachCategories().size()).isNotEqualTo(0);

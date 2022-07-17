@@ -2,7 +2,10 @@ package com.musinsa.product.service;
 
 import com.musinsa.product.domain.Category;
 import com.musinsa.product.domain.Product;
-import com.musinsa.product.dto.*;
+import com.musinsa.product.dto.LowestAndHighestPriceProductDto;
+import com.musinsa.product.dto.LowestPriceProductDto;
+import com.musinsa.product.dto.LowestPriceProductRequest;
+import com.musinsa.product.dto.ProductPostRequest;
 import com.musinsa.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +39,7 @@ public class ProductService {
         return lowestPriceProductDto;
     }
 
-    public LowestPriceProductDto searchLowestTotalPriceProductByOneBrand(String brand) {
+    public LowestPriceProductDto searchLowestTotalPriceProductByBrand(String brand) {
         LowestPriceProductDto lowestPriceProductDto = new LowestPriceProductDto();
         Category[] categories = Category.values();
 
@@ -48,5 +51,9 @@ public class ProductService {
         }
 
         return lowestPriceProductDto;
+    }
+
+    public LowestAndHighestPriceProductDto searchLowestAndHighestPriceProductByCategory(String category) {
+        return new LowestAndHighestPriceProductDto(productRepository.findLowestAndHighestPriceByCategory(Category.fromString(category)));
     }
 }

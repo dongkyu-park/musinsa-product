@@ -29,7 +29,7 @@ public class ProductController {
     @GetMapping("/product/lowest-price")
     @ResponseStatus(HttpStatus.OK)
     public LowestPriceProductResponse searchLowestPriceProductByAllCategories(@ModelAttribute @Validated LowestPriceProductRequest lowestPriceProductRequest) {
-        customValidator.validateLowestPriceProductRequest(lowestPriceProductRequest);
+        customValidator.validateCategoryAndBrand(lowestPriceProductRequest);
         LowestPriceProductDto lowestPriceProductDto = productService.searchLowestPriceProductByAllCategories(lowestPriceProductRequest);
 
         return new LowestPriceProductResponse(lowestPriceProductDto);
@@ -37,11 +37,20 @@ public class ProductController {
 
     @GetMapping("/product/lowest-total-price")
     @ResponseStatus(HttpStatus.OK)
-    public LowestTotalPriceProductResponse searchLowestTotalPriceProductByOneBrand(@RequestParam
-                                                                                    @NotBlank(message = "브랜드명이 입력되지 않았거나, 공백이 입력 되었습니다.")
-                                                                                    @Size(min = 1, max = 50, message = "브랜드명은 1자 이상, 50자 이하 여야 합니다.") String brand) {
-        LowestPriceProductDto lowestPriceProductDto = productService.searchLowestTotalPriceProductByOneBrand(brand);
+    public LowestTotalPriceProductResponse searchLowestTotalPriceProductByBrand(@RequestParam
+                                                                                       @NotBlank(message = "브랜드명이 입력되지 않았거나, 공백이 입력 되었습니다.")
+                                                                                       @Size(min = 1, max = 50, message = "브랜드명은 1자 이상, 50자 이하 여야 합니다.") String brand) {
+        LowestPriceProductDto lowestPriceProductDto = productService.searchLowestTotalPriceProductByBrand(brand);
 
         return new LowestTotalPriceProductResponse(brand, lowestPriceProductDto);
+    }
+
+    @GetMapping("/product/lowest-and-highest-price")
+    @ResponseStatus(HttpStatus.OK)
+    public LowestAndHighestPriceProductResponse searchLowestAndHighestPriceProductByCategory (@RequestParam
+                                                                                                @NotBlank(message = "카테고리명이 입력되지 않았거나, 공백이 입력 되었습니다.") String category) {
+        LowestAndHighestPriceProductDto lowestAndHighestPriceProductDto = productService.searchLowestAndHighestPriceProductByCategory(category);
+
+        return new LowestAndHighestPriceProductResponse(lowestAndHighestPriceProductDto);
     }
 }

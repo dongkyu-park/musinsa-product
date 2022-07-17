@@ -1,5 +1,6 @@
 package com.musinsa.product.dto;
 
+import com.musinsa.product.domain.ProductInfo;
 import lombok.Getter;
 
 import java.util.ArrayList;

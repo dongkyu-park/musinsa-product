@@ -4,7 +4,7 @@ import com.musinsa.product.domain.Category;
 import com.musinsa.product.domain.Product;
 import com.musinsa.product.dto.LowestPriceProductDto;
 import com.musinsa.product.dto.LowestPriceProductRequest;
-import com.musinsa.product.dto.ProductInfo;
+import com.musinsa.product.domain.ProductInfo;
 import com.musinsa.product.dto.ProductPostRequest;
 import com.musinsa.product.service.ProductService;
 import com.musinsa.product.valid.CustomValidator;
@@ -252,7 +252,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("한 브랜드 최저가 조회. 잘못 된 파라미터값으로 요청이 올 경우, 요청이 실패하고 400 에러 코드 리턴")
-    void searchLowestTotalPriceProductByOneBrand_fail() throws Exception {
+    void searchLowestTotalPriceProductByBrand_fail() throws Exception {
         //given
 
         //when
@@ -283,12 +283,12 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("한 브랜드 최저가 조회. 요청 성공")
-    void searchLowestTotalPriceProductByOneBrand_ok() throws Exception {
+    void searchLowestTotalPriceProductByBrand_ok() throws Exception {
         //given
         String brand = "A";
 
-        Mockito.when(productService.searchLowestTotalPriceProductByOneBrand(anyString()))
-                .thenReturn(getStubLowestPriceProductDtoSearchByOneBrand());
+        Mockito.when(productService.searchLowestTotalPriceProductByBrand(anyString()))
+                .thenReturn(getStubLowestPriceProductDtoSearchByBrand());
 
         //when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders
@@ -320,7 +320,7 @@ class ProductControllerTest {
         return lowestPriceProductDto;
     }
 
-    private LowestPriceProductDto getStubLowestPriceProductDtoSearchByOneBrand() {
+    private LowestPriceProductDto getStubLowestPriceProductDtoSearchByBrand() {
         LowestPriceProductDto lowestPriceProductDto = new LowestPriceProductDto();
         List<ProductInfo> productInfos = Arrays.asList(
                 new ProductInfo(1L, Category.TOP, "A", 10000),
