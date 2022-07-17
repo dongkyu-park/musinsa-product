@@ -26,7 +26,9 @@ public class ProductQuerydslRepositoryImpl implements ProductQuerydslRepository 
                 this.product.category,
                 this.product.brand))
                 .from(this.product)
-                .where(this.product.brand.eq(brand), this.product.category.eq(category))
+                .where(this.product.brand.eq(brand)
+                        .and(this.product.category.eq(category))
+                )
                 .limit(1)
                 .fetchOne();
     }
@@ -45,7 +47,9 @@ public class ProductQuerydslRepositoryImpl implements ProductQuerydslRepository 
                 .where(this.product.price.eq(
                         jpaQueryFactory.select(subProduct.price.min())
                                 .from(subProduct)
-                                .where(subProduct.category.eq(category))))
+                                .where(subProduct.category.eq(category))
+                        ).and(this.product.category.eq(category))
+                )
                 .limit(1)
                 .fetchOne();
 
@@ -58,7 +62,9 @@ public class ProductQuerydslRepositoryImpl implements ProductQuerydslRepository 
                 .where(this.product.price.eq(
                         jpaQueryFactory.select(subProduct.price.max())
                                 .from(subProduct)
-                                .where(subProduct.category.eq(category))))
+                                .where(subProduct.category.eq(category))
+                        ).and(this.product.category.eq(category))
+                )
                 .limit(1)
                 .fetchOne();
 
