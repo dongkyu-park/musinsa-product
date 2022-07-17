@@ -14,6 +14,10 @@ import java.util.stream.Collectors;
 public class CustomValidator {
 
     public void validateCategoryAndBrand(LowestPriceProductRequest lowestPriceProductRequest) {
+        if (missingParams(lowestPriceProductRequest)) {
+            throw new CustomException(ErrorCode.MISSING_PARAM);
+        }
+
         if (doNotMatchCountOfBrandAndCategory(lowestPriceProductRequest)) {
             throw new CustomException(ErrorCode.NOT_MATCH_COUNT_BRAND_WITH_CATEGORY);
         }
@@ -21,6 +25,10 @@ public class CustomValidator {
         if (invalidCategories(lowestPriceProductRequest)) {
             throw new CustomException(ErrorCode.INVALID_CATEGORY_NAME);
         }
+    }
+
+    private boolean missingParams(LowestPriceProductRequest lowestPriceProductRequest) {
+        return lowestPriceProductRequest.getCategory() == null || lowestPriceProductRequest.getBrand() == null;
     }
 
     public void validateCategory(Category category) {
