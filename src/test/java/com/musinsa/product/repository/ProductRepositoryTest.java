@@ -57,6 +57,20 @@ class ProductRepositoryTest {
         assertThat(productInfo.getBrand()).isEqualTo(brands.get(1));
     }
 
+    @Test
+    @DisplayName("카테고리별 최저, 최대가 조회. 성공하면 정보가 리스트에 담겨 반환된다. 0: 최저, 1: 최대")
+    void findLowestAndHighestPriceByCategory_ok() {
+        //given
+        Category category = Category.SNEAKERS;
+
+        //when
+        List<ProductInfo> lowestAndHighestPriceInfo = productRepository.findLowestAndHighestPriceByCategory(category);
+
+        //then
+        assertThat(lowestAndHighestPriceInfo.get(0).getCategory()).isEqualTo(category);
+        assertThat(lowestAndHighestPriceInfo.get(1).getCategory()).isEqualTo(category);
+    }
+
     private ProductPostRequest getStubProductPostRequest(String category, String brand, Integer price) {
         return new ProductPostRequest(category, brand, price);
     }

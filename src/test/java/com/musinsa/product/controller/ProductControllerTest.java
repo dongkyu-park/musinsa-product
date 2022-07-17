@@ -2,6 +2,7 @@ package com.musinsa.product.controller;
 
 import com.musinsa.product.domain.Category;
 import com.musinsa.product.domain.Product;
+import com.musinsa.product.dto.LowestAndHighestPriceProductDto;
 import com.musinsa.product.dto.LowestPriceProductDto;
 import com.musinsa.product.dto.requestdto.LowestPriceProductRequest;
 import com.musinsa.product.domain.ProductInfo;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -352,6 +354,75 @@ class ProductControllerTest {
         //then
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalPrice", is(81000)));
+    }
+
+    @Test
+    @DisplayName("카테고리별 최저, 최대가 조회. 잘못 된 파라미터값으로 요청이 올 경우, 요청이 실패하고 400 에러 코드 리턴")
+    void searchLowestAndHighestPriceProductByCategory_fail() throws Exception {
+        //given
+
+        //when
+        //카테고리명 누락
+        ResultActions result1 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-and-highest-price")
+                .param("category", "")
+                .contentType(MediaType.APPLICATION_JSON));
+        //카테고리명 누락2
+        ResultActions result2 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-and-highest-price")
+                .contentType(MediaType.APPLICATION_JSON));
+        //카테고리명 공백
+        ResultActions result3 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-and-highest-price")
+                .param("category", " ")
+                .contentType(MediaType.APPLICATION_JSON));
+        //존재하지 않는 카테고리명
+        ResultActions result4 = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-and-highest-price")
+                .param("category", "HAT")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        //카테고리명 누락
+        result1.andExpect(status().isBadRequest());
+        //카테고리명 누락2
+        result2.andExpect(status().isBadRequest());
+        //카테고리명 공백
+        result3.andExpect(status().isBadRequest());
+        //존재하지 않는 카테고리명
+        result4.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("카테고리별 최저, 최대가 조회. 요청 성공")
+    void searchLowestAndHighestPriceProductByCategory_ok() throws Exception {
+        //given
+        String category = "PANTS";
+
+        Mockito.when(productService.searchLowestAndHighestPriceProductByCategory(anyString()))
+                .thenReturn(getStubLowestAndHighestPriceProductDto(category));
+
+        //when
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders
+                .get("/product/lowest-and-highest-price")
+                .param("category", category)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.lowestPriceBrand", is("A")))
+                .andExpect(jsonPath("$.lowestPrice", is(3000)))
+                .andExpect(jsonPath("$.highestPriceBrand", is("D")))
+                .andExpect(jsonPath("$.highestPrice", is(15000)));
+    }
+
+    private LowestAndHighestPriceProductDto getStubLowestAndHighestPriceProductDto(String category) {
+        List<ProductInfo> lowestAndHighestPriceInfo = Arrays.asList(
+                new ProductInfo(1L, Category.fromString(category), "A", 3000),
+                new ProductInfo(2L, Category.fromString(category), "D", 15000)
+        );
+
+        return new LowestAndHighestPriceProductDto(lowestAndHighestPriceInfo);
     }
 
     private LowestPriceProductDto getStubLowestPriceProductDto() {

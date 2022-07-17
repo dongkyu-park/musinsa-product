@@ -1,6 +1,8 @@
 package com.musinsa.product.service;
 
+import com.musinsa.product.domain.Category;
 import com.musinsa.product.domain.Product;
+import com.musinsa.product.dto.LowestAndHighestPriceProductDto;
 import com.musinsa.product.dto.LowestPriceProductDto;
 import com.musinsa.product.dto.requestdto.LowestPriceProductRequest;
 import com.musinsa.product.dto.requestdto.ProductPostRequest;
@@ -64,6 +66,20 @@ class ProductServiceTest {
 
         //then
         assertThat(lowestPriceProductDto.getLowestPriceProductEachCategories().size()).isNotEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("카테고리별 최저, 최대가 조회. 성공하면 조회 정보가 반환된다.")
+    void searchLowestAndHighestPriceProductByCategory_ok() {
+        //given
+        String category = "SNEAKERS";
+
+        //when
+        LowestAndHighestPriceProductDto lowestAndHighestPriceProductDto = productService.searchLowestAndHighestPriceProductByCategory(category);
+
+        //then
+        assertThat(lowestAndHighestPriceProductDto.getLowestPriceProduct().getCategory()).isEqualTo(Category.fromString(category));
+        assertThat(lowestAndHighestPriceProductDto.getHighestPriceProduct().getCategory()).isEqualTo(Category.fromString(category));
     }
 
     private ProductPostRequest getStubProductPostRequest(String category, String brand, Integer price) {
