@@ -1,5 +1,7 @@
 # 상품 관리 및 가격 조회 서비스
 
+API 문서 : https://documenter.getpostman.com/view/20747799/UzQvt5Av
+
 상품 CRUD 기능 추가 및 서비스 이용자는 아래의 8가지 카테고리에서 상품을 1개씩 선택해 코디를 완성하여 구매 하고자 한다.
 
 - 상의
