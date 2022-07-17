@@ -27,6 +27,7 @@ public class ProductQuerydslRepositoryImpl implements ProductQuerydslRepository 
                 this.product.brand))
                 .from(this.product)
                 .where(this.product.brand.eq(brand), this.product.category.eq(category))
+                .limit(1)
                 .fetchOne();
     }
 
