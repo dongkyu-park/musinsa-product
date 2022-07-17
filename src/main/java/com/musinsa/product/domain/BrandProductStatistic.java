@@ -29,6 +29,12 @@ public class BrandProductStatistic {
         return false;
     }
 
+    public void compareLowestPriceProductInfo(ProductInfo productInfo) {
+        if (isLowestPriceProduct(productInfo)) {
+            changeLowestPriceProductInfo(productInfo);
+        }
+    }
+
     public void addCache(ProductInfo productInfo) {
         if (hasBrand(productInfo.getBrand())) {
             addNewCategory(productInfo);
@@ -40,6 +46,21 @@ public class BrandProductStatistic {
 
     public ProductInfo getLowestPriceProductInfo(String brand, Category category) {
         return getLowestPriceProductBooks(brand).get(category);
+    }
+
+    private boolean isLowestPriceProduct(ProductInfo productInfo) {
+        if (getSavedLowestPrice(productInfo) > productInfo.getPrice()) {
+            return true;
+        }
+        return false;
+    }
+
+    private Integer getSavedLowestPrice(ProductInfo productInfo) {
+        return getLowestPriceProductBooks(productInfo.getBrand()).get(productInfo.getCategory()).getPrice();
+    }
+
+    private void changeLowestPriceProductInfo(ProductInfo productInfo) {
+        getLowestPriceProductBooks(productInfo.getBrand()).put(productInfo.getCategory(), productInfo);
     }
 
     private boolean hasCategory(String brand, Category category) {

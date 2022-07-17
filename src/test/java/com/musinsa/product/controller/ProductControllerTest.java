@@ -417,12 +417,10 @@ class ProductControllerTest {
     }
 
     private LowestAndHighestPriceProductDto getStubLowestAndHighestPriceProductDto(String category) {
-        List<ProductInfo> lowestAndHighestPriceInfo = Arrays.asList(
-                new ProductInfo(1L, Category.fromString(category), "A", 3000),
-                new ProductInfo(2L, Category.fromString(category), "D", 15000)
-        );
+        ProductInfo lowestPriceProductInfo = new ProductInfo(1L, Category.fromString(category), "A", 3000);
+        ProductInfo HighestPriceProductInfo = new ProductInfo(2L, Category.fromString(category), "D", 15000);
 
-        return new LowestAndHighestPriceProductDto(lowestAndHighestPriceInfo);
+        return new LowestAndHighestPriceProductDto(lowestPriceProductInfo, HighestPriceProductInfo);
     }
 
     private LowestPriceProductDto getStubLowestPriceProductDto() {
@@ -461,13 +459,6 @@ class ProductControllerTest {
                 .forEach(productInfo -> lowestPriceProductDto.addLowestPriceProductInCategory(productInfo));
 
         return lowestPriceProductDto;
-    }
-
-    private LowestPriceProductRequest getStubLowestPriceProductRequest(List<String> brands, List<String> categories) {
-        return LowestPriceProductRequest.builder()
-                .brand(brands)
-                .category(categories)
-                .build();
     }
 
     private ProductPostRequest getStubProductPostRequest(String category, String brand, Integer price) {

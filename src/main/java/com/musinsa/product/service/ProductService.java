@@ -1,9 +1,6 @@
 package com.musinsa.product.service;
 
-import com.musinsa.product.domain.BrandProductStatistic;
-import com.musinsa.product.domain.Category;
-import com.musinsa.product.domain.CategoryProductStatistic;
-import com.musinsa.product.domain.Product;
+import com.musinsa.product.domain.*;
 import com.musinsa.product.dto.LowestAndHighestPriceProductDto;
 import com.musinsa.product.dto.LowestPriceProductDto;
 import com.musinsa.product.dto.requestdto.LowestPriceProductRequest;
@@ -23,13 +20,28 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public Product addProduct(ProductPostRequest productPostRequest) {
-        Product product = new Product(productPostRequest);
+        Product product = productRepository.save(new Product(productPostRequest));
 
-        return productRepository.save(product);
+        if (BRAND_PRODUCT_STATISTIC.isCached(product.getBrand(), product.getCategory())) {
+            updateBrandCache(product);
+        }
+
+        if (CATEGORY_PRODUCT_STATISTIC.isCached(product.getCategory())) {
+            updateCategoryCache(product);
+        }
+
+        return product;
+    }
+
+    private void updateBrandCache(Product product) {
+        BRAND_PRODUCT_STATISTIC.compareLowestPriceProductInfo(new ProductInfo(product));
+    }
+
+    private void updateCategoryCache(Product product) {
+        CATEGORY_PRODUCT_STATISTIC.comparePriceProductInfo(new ProductInfo(product));
     }
 
     public LowestPriceProductDto searchLowestPriceProductByAllCategories(LowestPriceProductRequest lowestPriceProductRequest) {
-        System.out.println("test");
         LowestPriceProductDto lowestPriceProductDto = new LowestPriceProductDto();
         int requestParamCount = lowestPriceProductRequest.getBrand().size();
 
@@ -73,7 +85,8 @@ public class ProductService {
             updateCategoryCache(category);
         }
 
-        return new LowestAndHighestPriceProductDto(CATEGORY_PRODUCT_STATISTIC.getLowestAndHighestPriceProductInfoByCategory(category));
+        return new LowestAndHighestPriceProductDto(CATEGORY_PRODUCT_STATISTIC.getLowestPriceProductInfoByCategory(category),
+                CATEGORY_PRODUCT_STATISTIC.getHighestPriceProductInfoByCategory(category));
     }
 
     private void updateBrandCache(String brand, Category category) {

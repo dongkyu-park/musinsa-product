@@ -2,7 +2,6 @@ package com.musinsa.product.domain;
 
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -10,6 +9,14 @@ public class CategoryProductStatistic {
 
     private CategoryProductTag lowestPriceProduct = new CategoryProductTag();
     private CategoryProductTag highestPriceProduct = new CategoryProductTag();
+
+    public boolean isCached(Category category) {
+        if (hasCategory(category)) {
+            return true;
+        }
+
+        return false;
+    }
 
     public boolean isNotCached(Category category) {
         if (!hasCategory(category)) {
@@ -19,15 +26,47 @@ public class CategoryProductStatistic {
         return false;
     }
 
+    public void comparePriceProductInfo(ProductInfo productInfo) {
+        if (isLowestPriceProduct(productInfo)) {
+            changeLowestPriceProductInfo(productInfo);
+        }
+
+        if (isHighestPriceProduct(productInfo)) {
+            changeHighestPriceProductInfo(productInfo);
+        }
+    }
+
+    private boolean isLowestPriceProduct(ProductInfo productInfo) {
+        if (getLowestPriceProductInfoByCategory(productInfo.getCategory()).getPrice() > productInfo.getPrice()) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isHighestPriceProduct(ProductInfo productInfo) {
+        if (getHighestPriceProductInfoByCategory(productInfo.getCategory()).getPrice() < productInfo.getPrice()) {
+            return true;
+        }
+        return false;
+    }
+
+    private void changeLowestPriceProductInfo(ProductInfo productInfo) {
+        lowestPriceProduct.getCategoryProductBooks().put(productInfo.getCategory(), productInfo);
+    }
+
+    private void changeHighestPriceProductInfo(ProductInfo productInfo) {
+        highestPriceProduct.getCategoryProductBooks().put(productInfo.getCategory(), productInfo);
+    }
+
     private boolean hasCategory(Category category) {
         return lowestPriceProduct.getCategoryProductBooks().containsKey(category) || highestPriceProduct.getCategoryProductBooks().containsKey(category);
     }
 
-    private ProductInfo getLowestPriceProductInfo(Category category) {
+    public ProductInfo getLowestPriceProductInfoByCategory(Category category) {
         return lowestPriceProduct.getCategoryProductBooks().get(category);
     }
 
-    private ProductInfo getHighestPriceProductInfo(Category category) {
+    public ProductInfo getHighestPriceProductInfoByCategory(Category category) {
         return highestPriceProduct.getCategoryProductBooks().get(category);
     }
 
@@ -36,18 +75,7 @@ public class CategoryProductStatistic {
     }
 
     private void addNewCategory(ProductInfo lowestPriceProductInfo, ProductInfo highestPriceProductInfo) {
-        lowestPriceProduct.getCategoryProductBooks()
-                .put(lowestPriceProductInfo.getCategory(), lowestPriceProductInfo);
-
-        highestPriceProduct.getCategoryProductBooks()
-                .put(highestPriceProductInfo.getCategory(), highestPriceProductInfo);
-    }
-
-    public List<ProductInfo> getLowestAndHighestPriceProductInfoByCategory(Category category) {
-        List<ProductInfo> lowestAndHighestPriceProductInfo = new ArrayList<>();
-        lowestAndHighestPriceProductInfo.add(lowestPriceProduct.getCategoryProductBooks().get(category));
-        lowestAndHighestPriceProductInfo.add(highestPriceProduct.getCategoryProductBooks().get(category));
-
-        return lowestAndHighestPriceProductInfo;
+        changeLowestPriceProductInfo(lowestPriceProductInfo);
+        changeHighestPriceProductInfo(highestPriceProductInfo);
     }
 }

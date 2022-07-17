@@ -15,4 +15,11 @@ public class ProductInfo {
     private Category category;
     private String brand;
     private Integer price;
+
+    public ProductInfo (Product product) {
+        this.id = product.getId();
+        this.category = product.getCategory();
+        this.brand = product.getBrand();
+        this.price = product.getPrice();
+    }
 }
