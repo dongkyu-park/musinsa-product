@@ -44,4 +44,23 @@
 
 - 저장소를 사용하여 저장하되, 저장소는 언제든 변경이 가능하게끔 구현한다.
 - 요청에 빠르게 응답 할 수 있는 방법을 고려하여 구현한다.
+  ![image](https://user-images.githubusercontent.com/81552729/179390642-21b201f9-e8f9-4833-99b8-37f2fe14a38c.png)
+  - Statistic 객체  
+    이미 조회 된 최저가, 최고가를 저장하는 캐시 저장소 개념으로 사용 했습니다.
+    > BrandProductStatistic 는 BrandCategoryTag 를 필드로 갖는다.
+    CategoryProductStatistic CategoryProductTag 를 필드로 갖는다.
+  - Tag 객체  
+    Key, Value 쌍의 Map을 필드로 가지며, Key와 Value 끼리 연관 관계를 갖습니다.
+    > BrandCategoryTag 는 Map<String, CategoryProductTag> 를 필드로 갖는다.  
+    CategoryProductTag 는 Map<Category, ProductInfo> 를 필드로 갖는다.  
+    ProductInfo 는 상품의 정보 객체로, id, category, brand, price 를 필드로 갖는다.
+
+  - 1. [Brand, Category] 선택 조회 시 BrandProductStatistic 객체의 BrandCategoryTag 를 이용하여 최저가 조회
+  - 2. [Brand] 선택 조회 시 BrandProductStatistic 객체의 BrandCategoryTag 를 이용하여 모든 카테고리의 최저가 조회
+  - 3. [Category] 선택 조회 시 CategoryProductStatistic 객체의 CategoryProductTag 를 이용하여 카테고리별 최저, 최고가 조회
+
+  > Service 레이어에서 Repository 레이어를 호출하기 전에 캐시를 먼저 찾은 뒤  
+  > - 캐시가 있다면, DB에 접근하지 않고 저장 된 캐시값을 반환 
+  > - 캐시가 없다면, DB에 접근하여 데이터를 가져오고 캐시에 저장
+
 - API 응답이 실패 할 경우, 실패값과 실패 사유를 전달한다.
