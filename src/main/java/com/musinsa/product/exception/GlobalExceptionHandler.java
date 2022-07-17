@@ -4,6 +4,7 @@ import com.musinsa.product.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -34,6 +35,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException ex) {
         String message = ex.getMessage();
         log.error("handleConstraintViolationException catch exception. message = {}", message);
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST;
+
+        return new ResponseEntity<>(new ErrorResponse(errorCode, message), errorCode.getHttpStatus());
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
+        String message = ex.getMessage();
+        log.error("handleMissingServletRequestParameterException catch exception. message = {}", message);
         ErrorCode errorCode = ErrorCode.BAD_REQUEST;
 
         return new ResponseEntity<>(new ErrorResponse(errorCode, message), errorCode.getHttpStatus());
