@@ -2,8 +2,8 @@ package com.musinsa.product.service;
 
 import com.musinsa.product.domain.Product;
 import com.musinsa.product.dto.LowestPriceProductDto;
-import com.musinsa.product.dto.LowestPriceProductRequest;
-import com.musinsa.product.dto.ProductPostRequest;
+import com.musinsa.product.dto.requestdto.LowestPriceProductRequest;
+import com.musinsa.product.dto.requestdto.ProductPostRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.musinsa.product.dto;
+package com.musinsa.product.dto.requestdto;
 
 import lombok.*;
 

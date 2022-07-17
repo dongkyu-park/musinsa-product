@@ -1,11 +1,11 @@
-package com.musinsa.product.dto;
+package com.musinsa.product.dto.responsedto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ProductResponse<T> {
+public class ProductPostResponse<T> {
 
     private String message;
     private T data;

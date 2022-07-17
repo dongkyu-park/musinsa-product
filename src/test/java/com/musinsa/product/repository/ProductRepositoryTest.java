@@ -5,7 +5,7 @@ import com.musinsa.product.config.QueryDslConfig;
 import com.musinsa.product.domain.Category;
 import com.musinsa.product.domain.Product;
 import com.musinsa.product.domain.ProductInfo;
-import com.musinsa.product.dto.ProductPostRequest;
+import com.musinsa.product.dto.requestdto.ProductPostRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

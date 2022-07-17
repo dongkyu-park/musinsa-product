@@ -1,6 +1,6 @@
 package com.musinsa.product.domain;
 
-import com.musinsa.product.dto.ProductPostRequest;
+import com.musinsa.product.dto.requestdto.ProductPostRequest;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

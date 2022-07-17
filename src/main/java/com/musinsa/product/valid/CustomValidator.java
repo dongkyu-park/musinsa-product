@@ -1,7 +1,7 @@
 package com.musinsa.product.valid;
 
 import com.musinsa.product.domain.Category;
-import com.musinsa.product.dto.LowestPriceProductRequest;
+import com.musinsa.product.dto.requestdto.LowestPriceProductRequest;
 import com.musinsa.product.exception.CustomException;
 import com.musinsa.product.exception.ErrorCode;
 import org.springframework.stereotype.Component;

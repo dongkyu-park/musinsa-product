@@ -1,5 +1,6 @@
-package com.musinsa.product.dto;
+package com.musinsa.product.dto.responsedto;
 
+import com.musinsa.product.dto.LowestAndHighestPriceProductDto;
 import lombok.Getter;
 
 @Getter

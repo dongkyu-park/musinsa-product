@@ -3,6 +3,12 @@ package com.musinsa.product.controller;
 import com.musinsa.product.domain.Category;
 import com.musinsa.product.domain.Product;
 import com.musinsa.product.dto.*;
+import com.musinsa.product.dto.requestdto.LowestPriceProductRequest;
+import com.musinsa.product.dto.requestdto.ProductPostRequest;
+import com.musinsa.product.dto.responsedto.LowestAndHighestPriceProductResponse;
+import com.musinsa.product.dto.responsedto.LowestPriceProductResponse;
+import com.musinsa.product.dto.responsedto.LowestTotalPriceProductResponse;
+import com.musinsa.product.dto.responsedto.ProductPostResponse;
 import com.musinsa.product.service.ProductService;
 import com.musinsa.product.valid.CustomValidator;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +29,8 @@ public class ProductController {
 
     @PostMapping("/product")
     @ResponseStatus(HttpStatus.OK)
-    public ProductResponse<Product> addProduct(@RequestBody @Validated ProductPostRequest productPostRequest) {
-        return new ProductResponse<>("상품이 정상적으로 추가 되었습니다.", productService.addProduct(productPostRequest));
+    public ProductPostResponse<Product> addProduct(@RequestBody @Validated ProductPostRequest productPostRequest) {
+        return new ProductPostResponse<>("상품이 정상적으로 추가 되었습니다.", productService.addProduct(productPostRequest));
     }
 
     @GetMapping("/product/lowest-price")

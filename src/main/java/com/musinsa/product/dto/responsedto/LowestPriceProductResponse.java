@@ -1,6 +1,7 @@
-package com.musinsa.product.dto;
+package com.musinsa.product.dto.responsedto;
 
 import com.musinsa.product.domain.ProductInfo;
+import com.musinsa.product.dto.LowestPriceProductDto;
 import lombok.Getter;
 
 import java.util.List;
