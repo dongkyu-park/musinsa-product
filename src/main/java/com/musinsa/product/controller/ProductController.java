@@ -1,5 +1,6 @@
 package com.musinsa.product.controller;
 
+import com.musinsa.product.domain.Category;
 import com.musinsa.product.domain.Product;
 import com.musinsa.product.dto.*;
 import com.musinsa.product.service.ProductService;
@@ -49,6 +50,7 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public LowestAndHighestPriceProductResponse searchLowestAndHighestPriceProductByCategory (@RequestParam
                                                                                                 @NotBlank(message = "카테고리명이 입력되지 않았거나, 공백이 입력 되었습니다.") String category) {
+        customValidator.validateCategory(Category.fromString(category));
         LowestAndHighestPriceProductDto lowestAndHighestPriceProductDto = productService.searchLowestAndHighestPriceProductByCategory(category);
 
         return new LowestAndHighestPriceProductResponse(lowestAndHighestPriceProductDto);

@@ -13,12 +13,18 @@ import java.util.stream.Collectors;
 @Component
 public class CustomValidator {
 
-    public void validateLowestPriceProductRequest(LowestPriceProductRequest lowestPriceProductRequest) {
+    public void validateCategoryAndBrand(LowestPriceProductRequest lowestPriceProductRequest) {
         if (doNotMatchCountOfBrandAndCategory(lowestPriceProductRequest)) {
             throw new CustomException(ErrorCode.NOT_MATCH_COUNT_BRAND_WITH_CATEGORY);
         }
 
         if (invalidCategories(lowestPriceProductRequest)) {
+            throw new CustomException(ErrorCode.INVALID_CATEGORY_NAME);
+        }
+    }
+
+    public void validateCategory(Category category) {
+        if (invalidCategory(category)) {
             throw new CustomException(ErrorCode.INVALID_CATEGORY_NAME);
         }
     }
@@ -39,5 +45,10 @@ public class CustomValidator {
                 .collect(Collectors.toList());
 
         return !requestCategories.equals(savedCategories);
+    }
+
+    private boolean invalidCategory(Category category) {
+        return !Arrays.stream(Category.values())
+                .anyMatch(savedCategory -> savedCategory.equals(category));
     }
 }
