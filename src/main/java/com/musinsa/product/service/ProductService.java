@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProductService {
 
-    public static int COUNT_ALL_CATEGORY = Category.values().length;
+    public static final int COUNT_ALL_CATEGORY = Category.values().length;
     public static final BrandProductStatistic BRAND_PRODUCT_STATISTIC = new BrandProductStatistic();
     public static final CategoryProductStatistic CATEGORY_PRODUCT_STATISTIC = new CategoryProductStatistic();
 
