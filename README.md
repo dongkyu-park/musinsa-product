@@ -46,7 +46,7 @@ API 문서 : https://documenter.getpostman.com/view/20747799/UzQvt5Av
 
 - 저장소를 사용하여 저장하되, 저장소는 언제든 변경이 가능하게끔 구현한다.
 - 요청에 빠르게 응답 할 수 있는 방법을 고려하여 구현한다.
-  ![image](https://user-images.githubusercontent.com/81552729/179390642-21b201f9-e8f9-4833-99b8-37f2fe14a38c.png)
+  ![image](https://user-images.githubusercontent.com/81552729/180725245-85305dd8-d471-4d2a-afc2-ff2753091316.png)
   - Statistic 객체  
     이미 조회 된 최저가, 최고가를 저장하는 캐시 저장소 개념으로 사용 했습니다.
     > BrandProductStatistic 는 BrandCategoryTag 를 필드로 갖는다.
