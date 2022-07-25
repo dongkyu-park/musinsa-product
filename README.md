@@ -51,10 +51,10 @@ API 문서 : https://documenter.getpostman.com/view/20747799/UzQvt5Av
     이미 조회 된 최저가, 최고가를 저장하는 캐시 저장소 개념으로 사용 했습니다.
     > BrandProductStatistic 는 BrandCategoryBook 을 필드로 갖는다.  
     CategoryProductStatistic 는 CategoryProductBook 을 필드로 갖는다.
-  - Tag 객체  
+  - Book 객체  
     Key, Value 쌍의 Map을 필드로 가지며, Key와 Value 끼리 연관 관계를 갖습니다.
-    > BrandCategoryTag 는 Map<String, CategoryProductBook> 을 필드로 갖는다.  
-    CategoryProductTag 는 Map<Category, ProductInfo> 을 필드로 갖는다.  
+    > BrandCategoryBook 은 Map<String, CategoryProductBook> 을 필드로 갖는다.  
+    CategoryProductBook 은 Map<Category, ProductInfo> 을 필드로 갖는다.  
     ProductInfo 는 상품의 정보 객체로, id, category, brand, price 를 필드로 갖는다.
 
   - 1. [Brand, Category] 선택 조회 시 BrandProductStatistic 객체의 BrandCategoryBook 를 이용하여 최저가 조회
