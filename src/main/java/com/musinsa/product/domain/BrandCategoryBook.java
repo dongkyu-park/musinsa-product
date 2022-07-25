@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public class CategoryProductTag {
+public class BrandCategoryBook {
 
-    private final Map<Category, ProductInfo> categoryProductBooks = new HashMap<>();
+    private Map<String, CategoryProductBook> brandCategoryBook = new HashMap<>();
 }

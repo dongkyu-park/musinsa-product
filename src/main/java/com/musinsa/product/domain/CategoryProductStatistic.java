@@ -7,8 +7,8 @@ import java.util.List;
 @Getter
 public class CategoryProductStatistic {
 
-    private CategoryProductTag lowestPriceProduct = new CategoryProductTag();
-    private CategoryProductTag highestPriceProduct = new CategoryProductTag();
+    private CategoryProductBook lowestPriceProduct = new CategoryProductBook();
+    private CategoryProductBook highestPriceProduct = new CategoryProductBook();
 
     public boolean isCached(Category category) {
         if (hasCategory(category)) {
@@ -51,23 +51,23 @@ public class CategoryProductStatistic {
     }
 
     private void changeLowestPriceProductInfo(ProductInfo productInfo) {
-        lowestPriceProduct.getCategoryProductBooks().put(productInfo.getCategory(), productInfo);
+        lowestPriceProduct.getCategoryProductBook().put(productInfo.getCategory(), productInfo);
     }
 
     private void changeHighestPriceProductInfo(ProductInfo productInfo) {
-        highestPriceProduct.getCategoryProductBooks().put(productInfo.getCategory(), productInfo);
+        highestPriceProduct.getCategoryProductBook().put(productInfo.getCategory(), productInfo);
     }
 
     private boolean hasCategory(Category category) {
-        return lowestPriceProduct.getCategoryProductBooks().containsKey(category) || highestPriceProduct.getCategoryProductBooks().containsKey(category);
+        return lowestPriceProduct.getCategoryProductBook().containsKey(category) || highestPriceProduct.getCategoryProductBook().containsKey(category);
     }
 
     public ProductInfo getLowestPriceProductInfoByCategory(Category category) {
-        return lowestPriceProduct.getCategoryProductBooks().get(category);
+        return lowestPriceProduct.getCategoryProductBook().get(category);
     }
 
     public ProductInfo getHighestPriceProductInfoByCategory(Category category) {
-        return highestPriceProduct.getCategoryProductBooks().get(category);
+        return highestPriceProduct.getCategoryProductBook().get(category);
     }
 
     public void addCache(List<ProductInfo> lowestAndHighestPriceProductInfo) {

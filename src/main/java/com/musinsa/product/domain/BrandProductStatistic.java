@@ -7,7 +7,7 @@ import java.util.Map;
 @Getter
 public class BrandProductStatistic {
 
-    private BrandCategoryTag lowestPriceCategories = new BrandCategoryTag();
+    private BrandCategoryBook lowestPriceCategories = new BrandCategoryBook();
 
     public boolean isCached(String brand, Category category) {
         if (hasBrand(brand) && hasCategory(brand, category)) {
@@ -69,23 +69,23 @@ public class BrandProductStatistic {
     }
 
     private boolean hasBrand(String brand) {
-        return lowestPriceCategories.getBrandCategoryBooks()
+        return lowestPriceCategories.getBrandCategoryBook()
                 .containsKey(brand);
     }
 
     private Map<Category, ProductInfo> getLowestPriceProductBooks(String brand) {
-        return lowestPriceCategories.getBrandCategoryBooks().get(brand).getCategoryProductBooks();
+        return lowestPriceCategories.getBrandCategoryBook().get(brand).getCategoryProductBook();
     }
 
     private void addNewCategory(ProductInfo productInfo) {
-        lowestPriceCategories.getBrandCategoryBooks()
+        lowestPriceCategories.getBrandCategoryBook()
                 .get(productInfo.getBrand())
-                .getCategoryProductBooks()
+                .getCategoryProductBook()
                 .put(productInfo.getCategory(), productInfo);
     }
 
     private void addNewBrand(ProductInfo productInfo) {
-        lowestPriceCategories.getBrandCategoryBooks()
-                .put(productInfo.getBrand(), new CategoryProductTag());
+        lowestPriceCategories.getBrandCategoryBook()
+                .put(productInfo.getBrand(), new CategoryProductBook());
     }
 }
