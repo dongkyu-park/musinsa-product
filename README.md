@@ -49,8 +49,8 @@ API 문서 : https://documenter.getpostman.com/view/20747799/UzQvt5Av
   ![image](https://user-images.githubusercontent.com/81552729/180725245-85305dd8-d471-4d2a-afc2-ff2753091316.png)
   - Statistic 객체  
     이미 조회 된 최저가, 최고가를 저장하는 캐시 저장소 개념으로 사용 했습니다.
-    > BrandProductStatistic 는 BrandCategoryTag 를 필드로 갖는다.
-    CategoryProductStatistic CategoryProductTag 를 필드로 갖는다.
+    > BrandProductStatistic 는 BrandCategoryTag 를 필드로 갖는다.  
+    CategoryProductStatistic  CategoryProductTag 를 필드로 갖는다.
   - Tag 객체  
     Key, Value 쌍의 Map을 필드로 가지며, Key와 Value 끼리 연관 관계를 갖습니다.
     > BrandCategoryTag 는 Map<String, CategoryProductTag> 를 필드로 갖는다.  
