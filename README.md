@@ -1,5 +1,7 @@
 # 상품 관리 및 가격 조회 서비스
 
+API 문서 : https://documenter.getpostman.com/view/20747799/UzQvt5Av
+
 상품 CRUD 기능 추가 및 서비스 이용자는 아래의 8가지 카테고리에서 상품을 1개씩 선택해 코디를 완성하여 구매 하고자 한다.
 
 - 상의
@@ -44,11 +46,11 @@
 
 - 저장소를 사용하여 저장하되, 저장소는 언제든 변경이 가능하게끔 구현한다.
 - 요청에 빠르게 응답 할 수 있는 방법을 고려하여 구현한다.
-  ![image](https://user-images.githubusercontent.com/81552729/179390642-21b201f9-e8f9-4833-99b8-37f2fe14a38c.png)
+  ![image](https://user-images.githubusercontent.com/81552729/180725245-85305dd8-d471-4d2a-afc2-ff2753091316.png)
   - Statistic 객체  
     이미 조회 된 최저가, 최고가를 저장하는 캐시 저장소 개념으로 사용 했습니다.
-    > BrandProductStatistic 는 BrandCategoryTag 를 필드로 갖는다.
-    CategoryProductStatistic CategoryProductTag 를 필드로 갖는다.
+    > BrandProductStatistic 는 BrandCategoryTag 를 필드로 갖는다.  
+    CategoryProductStatistic 는 CategoryProductTag 를 필드로 갖는다.
   - Tag 객체  
     Key, Value 쌍의 Map을 필드로 가지며, Key와 Value 끼리 연관 관계를 갖습니다.
     > BrandCategoryTag 는 Map<String, CategoryProductTag> 를 필드로 갖는다.  
