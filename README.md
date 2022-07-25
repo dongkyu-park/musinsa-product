@@ -46,20 +46,20 @@ API 문서 : https://documenter.getpostman.com/view/20747799/UzQvt5Av
 
 - 저장소를 사용하여 저장하되, 저장소는 언제든 변경이 가능하게끔 구현한다.
 - 요청에 빠르게 응답 할 수 있는 방법을 고려하여 구현한다.
-  ![image](https://user-images.githubusercontent.com/81552729/180725245-85305dd8-d471-4d2a-afc2-ff2753091316.png)
+  ![image](https://user-images.githubusercontent.com/81552729/180800908-c11367f4-9c55-4e6c-9bfd-d8f03668ef70.png)
   - Statistic 객체  
     이미 조회 된 최저가, 최고가를 저장하는 캐시 저장소 개념으로 사용 했습니다.
-    > BrandProductStatistic 는 BrandCategoryTag 를 필드로 갖는다.  
-    CategoryProductStatistic 는 CategoryProductTag 를 필드로 갖는다.
+    > BrandProductStatistic 는 BrandCategoryBook 을 필드로 갖는다.  
+    CategoryProductStatistic 는 CategoryProductBook 을 필드로 갖는다.
   - Tag 객체  
     Key, Value 쌍의 Map을 필드로 가지며, Key와 Value 끼리 연관 관계를 갖습니다.
-    > BrandCategoryTag 는 Map<String, CategoryProductTag> 를 필드로 갖는다.  
-    CategoryProductTag 는 Map<Category, ProductInfo> 를 필드로 갖는다.  
+    > BrandCategoryTag 는 Map<String, CategoryProductBook> 을 필드로 갖는다.  
+    CategoryProductTag 는 Map<Category, ProductInfo> 을 필드로 갖는다.  
     ProductInfo 는 상품의 정보 객체로, id, category, brand, price 를 필드로 갖는다.
 
-  - 1. [Brand, Category] 선택 조회 시 BrandProductStatistic 객체의 BrandCategoryTag 를 이용하여 최저가 조회
-  - 2. [Brand] 선택 조회 시 BrandProductStatistic 객체의 BrandCategoryTag 를 이용하여 모든 카테고리의 최저가 조회
-  - 3. [Category] 선택 조회 시 CategoryProductStatistic 객체의 CategoryProductTag 를 이용하여 카테고리별 최저, 최고가 조회
+  - 1. [Brand, Category] 선택 조회 시 BrandProductStatistic 객체의 BrandCategoryBook 를 이용하여 최저가 조회
+  - 2. [Brand] 선택 조회 시 BrandProductStatistic 객체의 BrandCategoryBook 를 이용하여 모든 카테고리의 최저가 조회
+  - 3. [Category] 선택 조회 시 CategoryProductStatistic 객체의 CategoryProductBook 를 이용하여 카테고리별 최저, 최고가 조회
 
   > Service 레이어에서 Repository 레이어를 호출하기 전에 캐시를 먼저 찾은 뒤  
   > - 캐시가 있다면, DB에 접근하지 않고 저장 된 캐시값을 반환 
